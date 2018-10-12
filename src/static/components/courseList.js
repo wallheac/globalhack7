@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react"
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Course from "./Course"
+import Course from "./course"
 
 class CoursesList extends PureComponent {
     constructor(props) {
