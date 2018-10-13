@@ -17,6 +17,10 @@ class TranslationDisplay extends Component {
         this.setState({connecting: true});
     }
 
+    handleCallConnected = () => {
+        this.setState({connecting:false})
+    }
+
     render() {
         return(
             <Fragment>

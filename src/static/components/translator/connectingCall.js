@@ -6,7 +6,9 @@ import {CircularProgress} from '@material-ui/core';
 class ConnectingCall extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            connected: false
+        }
     }
 
     render() {
