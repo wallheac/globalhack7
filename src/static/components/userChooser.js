@@ -10,11 +10,11 @@ class UserChooser extends PureComponent {
 
     render() {
         return (
-            <Grid item container direction="column" spacing={32}>
+            <Grid item container direction="column">
                 <Grid item container justify="center">
                     <Typography>What are you here for?</Typography>
                 </Grid>
-                <Grid item container justify="center" alignItems="center" spacing={24} >
+                <Grid item container justify="center" alignItems="center">
                     <Grid item>
                         <Button onClick={this.handleUserClick(UserTypes.TRANSLATOR)} color="primary" size="large" variant="contained">{UserTypes.TRANSLATOR}</Button>
                     </Grid>
@@ -28,11 +28,7 @@ class UserChooser extends PureComponent {
 }
 
 UserChooser.propTypes = {
-    onChooseUser: PropTypes.func
-}
-
-UserChooser.defaultProps = {
-    onChooseUser: null
+    onChooseUser: PropTypes.func.isRequired
 }
 
 export default UserChooser;

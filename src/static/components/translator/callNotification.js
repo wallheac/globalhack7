@@ -1,28 +1,16 @@
-import React, {Component, Fragment} from "react";
+import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
-import Dialog from "@material-ui/core/Dialog";
-import  DialogTitle from "@material-ui/core/DialogTitle";
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import {List, ListItem, ListItemText, Button, Dialog, DialogTitle, IconButton, Typography, Grid} from "@material-ui/core";
 import {CheckCircle, Cancel} from '@material-ui/icons';
 
-class CallNotification extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            acceptCall: null
-        }``
-    }
-
+class CallNotification extends PureComponent {
     render() {
         return(
-            <Dialog open={true}>
-            <DialogTitle>Accept Call</DialogTitle>
+            <Dialog open={this.props.show}>
+                <DialogTitle>Accept Call</DialogTitle>
                 <List>
                     <ListItem>
-                        <Button>
+                        <Button onClick={this.props.onAcceptCall}>
                             <CheckCircle/>
                         </Button>
                         <ListItemText>
@@ -30,7 +18,7 @@ class CallNotification extends Component {
                         </ListItemText>
                     </ListItem>
                     <ListItem>
-                        <Button>
+                        <Button onClick={this.props.onDeclineCall}>
                             <Cancel />
                         </Button>
                         <ListItemText>
@@ -44,12 +32,13 @@ class CallNotification extends Component {
 }
 
 CallNotification.propTypes = {
-    openCallNotification: PropTypes.bool,
-    classes: PropTypes.object.isRequired
+    show: PropTypes.bool,
+    onAcceptCall: PropTypes.func.isRequired,
+    onDeclineCall: PropTypes.func.isRequired
 };
 
 CallNotification.defaultProps = {
-    openCallNotification: false
+    show: false
 };
 
 export default CallNotification;
