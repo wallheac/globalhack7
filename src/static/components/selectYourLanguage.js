@@ -16,7 +16,7 @@ class SelectYourLanguage extends PureComponent {
                 value={this.props.language || ""}
                 onChange={this.handleSelectYourLanguage}>
                 {Languages.map(language =>
-                    <MenuItem key={language.language} value={language.name}>
+                    <MenuItem key={language.language} value={language.language}>
                         {language.name}
                     </MenuItem>
                 )}

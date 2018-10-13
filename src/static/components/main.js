@@ -75,11 +75,11 @@ class Main extends Component {
                             1: () => <UserChooser onChooseUser={this.onChooseUser} />,
                             2: userType => ({
                                 [UserTypes.TRANSLATOR]: <SpokenLanguages languageOptions={[{label: "English", value: "english"}]} onGoOnline={this.onGoOnline} />,
-                                [UserTypes.USER]: <UserInformation chosenLanguage="en" sendUserInformation={this.sendUserInformation} />
+                                [UserTypes.USER]: <UserInformation chosenLanguage={this.state.language} sendUserInformation={this.sendUserInformation} />
                             }[userType]),
                             3: userType => ({
                                 [UserTypes.TRANSLATOR]: <h1></h1>,
-                                [UserTypes.USER]: <CallInformation chosenLanguage="en" sendCallInformation={this.sendCallInformation} />
+                                [UserTypes.USER]: <CallInformation chosenLanguage={this.state.language} sendCallInformation={this.sendCallInformation} />
                             }[userType]),
                             4: userType => ({
                                 [UserTypes.TRANSLATOR]: <h1></h1>,

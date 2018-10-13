@@ -7,16 +7,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import languages from "../../test/languages";
-import languages2 from "../../test/languages2";
 import userInformation from "../translateText/userInformation";
 
 class UserForm extends Component {
     static propTypes = {
         chosenLanguage: propTypes.string.isRequired,
         sendUserInformation: propTypes.func
-    }
-    static defaultProps = {
-        chosenLanguage: "en"
     }
     constructor(props) {
         super(props);

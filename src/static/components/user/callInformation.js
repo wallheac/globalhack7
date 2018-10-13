@@ -4,15 +4,12 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
-import languages from "../../test/languages";
+import languages from "../../test/languagesInNative";
 import callInformation from "../translateText/callInformation";
 class UserForm extends Component {
     static propTypes = {
         chosenLanguage: propTypes.string.isRequired,
         sendCallInformation: propTypes.func
-    }
-    static defaultProps = {
-        chosenLanguage: "fr"
     }
     constructor(props) {
         super(props);
@@ -21,7 +18,7 @@ class UserForm extends Component {
                 callerName: null,
                 phoneNumber: null,
                 message: null,
-                voiceLanguage: languages.find(language => {
+                voiceLanguage: languages[this.props.chosenLanguage].find(language => {
                     return language.language === "en";
                 }).language
             },
@@ -115,7 +112,7 @@ class UserForm extends Component {
                         error={this.state.validation.voiceLanguage}
                         select
                     >
-                        {languages.map(language =>
+                        {languages[this.props.chosenLanguage].map(language =>
                             <MenuItem key={language.language} value={language.language}>
                                 {language.name}
                             </MenuItem>
