@@ -7,12 +7,24 @@ const userInformation = {
         "en": "Address",
         "fr": "asdf"
     },
-    DETAILS: {
-        "en": "Details",
+    ALIEN: {
+        "en": "Alien #",
         "fr": "asdf"
     },
-    PHONENUMBER: {
-        "en": "Phone Number",
+    PASSPORT: {
+        "en": "Passport #",
+        "fr": "asdf"
+    },
+    TOOLTIP: {
+        "en": "This information will be sent privately and will not be seen by the voice",
+        "fr": "asdf"
+    },
+    OPTIONAL: {
+        "en": "optional",
+        "fr": "asdf"
+    },
+    CONTINUE: {
+        "en": "Continue",
         "fr": "asdf"
     }
 }

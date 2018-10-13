@@ -33,6 +33,17 @@ class Main extends Component {
 
     goBackAStep = () => this.setState(prevState => ({step: prevState.step - 1}));
 
+    sendUserInformation = userInformation => {
+        console.log("userInformation!", userInformation);
+        this.setState({step: 3});
+    }
+
+    sendCallInformation = callInformation => {
+        console.log("callInformation!!", callInformation);
+        this.setState({step: 4});
+    }
+
+
     // onSelectYourLanguage = requestedLanguage => {
     //     this.setState({requestedLanguage, step: 1});
     //     Model.setNativeLanguage(requestedLanguage);
@@ -64,7 +75,15 @@ class Main extends Component {
                             1: () => <UserChooser onChooseUser={this.onChooseUser} />,
                             2: userType => ({
                                 [UserTypes.TRANSLATOR]: <SpokenLanguages languageOptions={[{label: "English", value: "english"}]} onGoOnline={this.onGoOnline} />,
-                                [UserTypes.USER]: <UserInformation chosenLanguage="en" />
+                                [UserTypes.USER]: <UserInformation chosenLanguage="en" sendUserInformation={this.sendUserInformation} />
+                            }[userType]),
+                            3: userType => ({
+                                [UserTypes.TRANSLATOR]: <h1></h1>,
+                                [UserTypes.USER]: <CallInformation chosenLanguage="en" sendCallInformation={this.sendCallInformation} />
+                            }[userType]),
+                            4: userType => ({
+                                [UserTypes.TRANSLATOR]: <h1></h1>,
+                                [UserTypes.USER]: <h1>step 4</h1>
                             }[userType]),
                         }[this.state.step](this.state.userType)
                     }

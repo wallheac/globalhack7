@@ -16,6 +16,12 @@ const callInformation = {
         "en": "What is your message?",
         "fr": "Quel est ton message?",
         "zh-TW": "你的消息是什麼？"
+    },
+    VOICELANGUAGE: {
+        "de": "Was ist deine Nachricht?",
+        "en": "What languange is this call in?",
+        "fr": "Quel est ton message?",
+        "zh-TW": "你的消息是什麼？"
     }
 }
 export default callInformation;
