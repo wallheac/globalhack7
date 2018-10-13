@@ -64,7 +64,7 @@ class Main extends Component {
                             1: () => <UserChooser onChooseUser={this.onChooseUser} />,
                             2: userType => ({
                                 [UserTypes.TRANSLATOR]: <SpokenLanguages languageOptions={[{label: "English", value: "english"}]} onGoOnline={this.onGoOnline} />,
-                                [UserTypes.USER]: <h1>You're on the User path...</h1>
+                                [UserTypes.USER]: <UserInformation chosenLanguage="en" />
                             }[userType]),
                         }[this.state.step](this.state.userType)
                     }
