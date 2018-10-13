@@ -13,7 +13,7 @@ class CallNotification extends Component {
         super(props);
         this.state = {
             acceptCall: null
-        }
+        }``
     }
 
     render() {
