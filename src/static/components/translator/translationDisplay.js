@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
 import {IconButton, Grid} from "@material-ui/core";
 import {Call} from '@material-ui/icons';
-import ConnectingCallModal from './connectingCall';
+import Loading from './loading';
 
 class TranslationDisplay extends Component {
     constructor(props) {
@@ -40,7 +40,8 @@ class TranslationDisplay extends Component {
                         <Call/>
                     </IconButton>
                 </Grid>
-                <ConnectingCallModal
+                <Loading
+                    title={"Connecting"}
                     connecting={this.state.connecting}
                 />
             </Fragment>
