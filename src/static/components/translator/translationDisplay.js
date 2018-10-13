@@ -2,16 +2,19 @@ import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
 import {IconButton, Grid} from "@material-ui/core";
 import {Call} from '@material-ui/icons';
+import ConnectingCallModal from './connectingCall';
 
 class TranslationDisplay extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            connecting: false
         }
     }
 
-    handleMakeCall() {
+    handleMakeCall = () => {
         //TODO
+        this.setState({connecting: true});
     }
 
     render() {
@@ -33,6 +36,9 @@ class TranslationDisplay extends Component {
                         <Call/>
                     </IconButton>
                 </Grid>
+                <ConnectingCallModal
+                    connecting={this.state.connecting}
+                />
             </Fragment>
         );
     }
