@@ -14,10 +14,11 @@ class Service {
     }
     setRole(ws, session, content) {
         if(content !== "USER" && content !== "TRANSLATOR") {
-            console.error("invalid role");
+            console.error("invalid role", content);
             return;
         }
         session.role = content;
+        ws.send(JSON.stringify({topic: "state.role", content: session.role}));
     }
 };
 const service = new Service();
@@ -32,7 +33,7 @@ wss.on("connection", (ws, req) => {
         console.log("received: %s", message);
         try {
             const body = JSON.parse(message);
-            if(!body.topic) {
+            if(!body.topic || typeof body.topic !== "string") {
                 console.log("invalid message", message);
                 return;
             }
@@ -43,7 +44,7 @@ wss.on("connection", (ws, req) => {
                     return;
                 }
                 const sess = sessions.get(ws);
-                (service[method])(ws, sess, body);
+                (service[method])(ws, sess, body.content);
             } else {
                 console.log("unknown message type", message);
                 return;

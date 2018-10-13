@@ -34,10 +34,10 @@ class Model extends EventEmitter {
         }
     }
     setNativeLanguage(language) {
-        return this.send({topic: "api.setNativeLanguage", content: language});
+        return this.send("api.setNativeLanguage", language);
     }
     setRole(role) {
-        return this.send({topic: "api.setRole", content: role});
+        return this.send("api.setRole", role);
     }
 }
 export default new Model();
