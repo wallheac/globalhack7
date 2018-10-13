@@ -8,7 +8,6 @@
     "build-ui": "webpack --env.production",
     "build": "npm run build-ui && npm run build-api",
     "api-dev-server": "cross-env port=9081 nodemon --watch src/api node_modules/@babel/node/lib/babel-node.js src/api/app.js",
-    "ws-dev-server": "cross-env port=9082 nodemon --watch src/ws node_modules/@babel/node/lib/babel-node.js src/ws/app.js",
     "ui-dev-server": "webpack-dev-server",
     "start": "node dist/api/app.js"
   },

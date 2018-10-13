@@ -52,7 +52,6 @@ module.exports = function(env) {
                 },
                 "/test": {
                     target: "ws://localhost:9081",
-                    pathRewrite: {"^/test": ""},
                     ws: true
                 }
             },
