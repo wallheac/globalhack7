@@ -1,4 +1,4 @@
 export default Object.freeze({
-    TRANSLATOR: "Translator",
-    USER: "User"
+    TRANSLATOR: "TRANSLATOR",
+    USER: "USER"
 });
