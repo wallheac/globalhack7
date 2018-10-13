@@ -1,11 +1,6 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
-import Dialog from "@material-ui/core/Dialog";
-import  DialogTitle from "@material-ui/core/DialogTitle";
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import {Dialog, DialogTitle, IconButton, Typography, Grid} from "@material-ui/core";
 import {CheckCircle, Cancel} from '@material-ui/icons';
 
 class CallNotification extends Component {
@@ -13,39 +8,38 @@ class CallNotification extends Component {
         super(props);
         this.state = {
             acceptCall: null
-        }``
+        }
     }
 
     render() {
         return(
             <Dialog open={true}>
             <DialogTitle>Accept Call</DialogTitle>
-                <List>
-                    <ListItem>
-                        <Button>
-                            <CheckCircle/>
-                        </Button>
-                        <ListItemText>
+                <Grid container direction="column" alignItems="center">
+                    <Grid item>
+                        <Typography>
                             Accept
-                        </ListItemText>
-                    </ListItem>
-                    <ListItem>
-                        <Button>
-                            <Cancel />
-                        </Button>
-                        <ListItemText>
+                        </Typography>
+                        <IconButton>
+                            <CheckCircle/>
+                        </IconButton>
+                    </Grid>
+                    <Grid item>
+                        <Typography>
                             Decline
-                        </ListItemText>
-                    </ListItem>
-                </List>
-            </Dialog>
+                        </Typography>
+                        <IconButton>
+                            <Cancel />
+                        </IconButton>
+                    </Grid>
+                </Grid>
+                </Dialog>
         );
     };
 }
 
 CallNotification.propTypes = {
     openCallNotification: PropTypes.bool,
-    classes: PropTypes.object.isRequired
 };
 
 CallNotification.defaultProps = {
