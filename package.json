@@ -1,6 +1,6 @@
 {
-  "name": "webapp-template",
-  "version": "0.0.0",
+  "name": "be-my-voice",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/api/app.js",
   "scripts": {

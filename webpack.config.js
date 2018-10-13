@@ -45,7 +45,6 @@ module.exports = function(env) {
             compress: true,
             port: 9080,
             proxy: {
-                "/api": "http://localhost:9081",
                 "/static": {
                     target: "http://localhost:9080",
                     pathRewrite: {"^/static": ""}
