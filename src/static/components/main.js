@@ -9,11 +9,16 @@ import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import Paper from "@material-ui/core/Paper";
+import UserInformation from "./user/userInformation"
+import CallInformation from "./user/callInformation"
 
+import Model from "../model/app";
 class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            // requestedLanguage: null,
+            // requestedUserType: null,
             language: null,
             userType: null,
             step: 0
@@ -27,6 +32,26 @@ class Main extends Component {
     onGoOnline = data => console.log("### this is the data: ", data);
 
     goBackAStep = () => this.setState(prevState => ({step: prevState.step - 1}));
+
+    // onSelectYourLanguage = requestedLanguage => {
+    //     this.setState({requestedLanguage, step: 1});
+    //     Model.setNativeLanguage(requestedLanguage);
+    // }
+
+    // onChooseUser = requestedUserType => {
+    //     this.setState({requestedUserType});
+    //     Model.setRole(requestedUserType);
+    // }
+
+    // componentDidMount() {
+    //     Model.on("test", () => {
+    //         console.log("test received");
+    //     });
+    //     Model.send("api.test", {message: "hello"});
+    //     Model.on("state.role", userType => {
+    //         this.setState({userType});
+    //     });
+    // }
 
     render() {
         return (
@@ -43,6 +68,28 @@ class Main extends Component {
                             }[userType]),
                         }[this.state.step](this.state.userType)
                     }
+                    {/* Requested User Type: {this.state.requestedUserType}
+                    User Type: {this.state.userType}
+                    <button onClick={(event) => {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        this.onChooseUser("USER");
+                    }}>User</button>
+                    <SpokenLanguages
+                        onGoOnline={this.onGoOnline}
+                        languageOptions={[
+                            {label: "English", value: "english"},
+                            {label: "Eskimo", value: "eskimo"},
+                            {label: "Potato Language", value: "potato_language"},
+                            {label: "Swiss", value: "swiss"}
+                        ]}
+                    />
+                    <Grid container item>
+                        <UserInformation />
+                    </Grid>
+                    <Grid container item>
+                        <CallInformation />
+                    </Grid> */}
                 </Grid>
             </Fragment>
         );
