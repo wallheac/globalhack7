@@ -3,7 +3,8 @@ import Grid from "@material-ui/core/Grid";
 import SelectYourLanguage from "./selectYourLanguage";
 import UserChooser from "./userChooser";
 import SpokenLanguages from "./translator/spokenLanguages";
-import UserForm from "./userForm"
+import UserInformation from "./user/userInformation"
+import CallInformation from "./user/callInformation"
 
 import Model from "../model/app";
 class Main extends Component {
@@ -41,7 +42,10 @@ class Main extends Component {
                         ]}
                     />
                     <Grid container item>
-                        <UserForm />
+                        <UserInformation />
+                    </Grid>
+                    <Grid container item>
+                        <CallInformation />
                     </Grid>
                 </Grid>
         );

@@ -14,11 +14,11 @@ class SelectYourLanguage extends PureComponent {
                 label="Please Select Your Language"
                 value={this.props.language}
                 onChange={this.handleSelectYourLanguage}>
-                // TODO: map over languages object...
-                <MenuItem key="english" value="english">English</MenuItem>
-                <MenuItem key="notenglish" value="notenglish">Not English</MenuItem>
-                <MenuItem key="chinese" value="chinese">Chinese</MenuItem>
-                <MenuItem key="japanese" value="japanese">Japanese</MenuItem>
+                {languages.map(language =>
+                    <MenuItem key={language.language} value={language.name}>
+                        {language.name}
+                    </MenuItem>
+                )}
             </TextField>
         );
     }
