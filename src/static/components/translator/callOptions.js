@@ -12,22 +12,34 @@ class CallOptions extends Component {
         }
     }
 
+    handleCallEnd() {
+        //TODO
+    }
+
+    handleSendProtected() {
+        //TODO
+    }
+
+    handleSaveCall() {
+        //TODO
+    }
+
     render() {
     return(
         <Fragment>
             <Grid container>
                 <Grid item>
-                    <IconButton>
+                    <IconButton onClick={this.handleCallEnd}>
                         <CallEnd/>
                     </IconButton>
                 </Grid>
                 <Grid item>
-                    <IconButton>
+                    <IconButton onClick={this.handleSendProtected}>
                         <Lock/>
                     </IconButton>
                 </Grid>
                 <Grid item>
-                    <IconButton>
+                    <IconButton onClick={this.handleSaveCall}>
                         <Save/>
                     </IconButton>
                 </Grid>
