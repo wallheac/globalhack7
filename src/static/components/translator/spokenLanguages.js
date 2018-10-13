@@ -35,8 +35,9 @@ class SpokenLanguages extends Component {
     onChangeName = event => this.setState({name: event.target.value});
 
     handleGoOnline = () => {
-        // TODO: validate form...
-        this.props.onGoOnline();
+        if(Array.isArray(this.state.selectedLanguages) && this.state.selectedLanguages.length > 0) {
+            this.props.onGoOnline({name: this.state.name, selectedLanguages: this.state.selectedLanguages});
+        }
     }
 
     render() {
@@ -58,7 +59,7 @@ class SpokenLanguages extends Component {
                         disabled={languages.length === 0}
                         label="Please Select Your Language"
                         placeholder="Please Select Your Language"
-                        value={hasLanguages && languages[0].value}
+                        value=""
                         onChange={this.onSelectLanguage}>
                         {
                             hasLanguages ? languages.map(language => (

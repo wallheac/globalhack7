@@ -12,7 +12,7 @@ class SelectYourLanguage extends PureComponent {
                 select
                 fullWidth
                 label="Please Select Your Language"
-                value={this.props.language}
+                value={this.props.language || ""}
                 onChange={this.handleSelectYourLanguage}>
                 // TODO: map over languages object...
                 <MenuItem key="english" value="english">English</MenuItem>
