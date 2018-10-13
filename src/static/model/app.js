@@ -33,5 +33,11 @@ class Model extends EventEmitter {
             console.error("Error receiving message", error, rawMessage);
         }
     }
+    setNativeLanguage(language) {
+        return this.send({topic: "api.setNativeLanguage", content: language});
+    }
+    setRole(role) {
+        return this.send({topic: "api.setRole", content: role});
+    }
 }
 export default new Model();
