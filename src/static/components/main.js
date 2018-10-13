@@ -18,10 +18,14 @@ class Main extends Component {
 
     onChooseUser = userType => this.setState({userType});
 
+    onGoOnline = () => console.log("Go Online!");
+
     render() {
         return (
             <Grid container>
-                <SpokenLanguages />
+                <SpokenLanguages
+                    onGoOnline={this.onGoOnline}
+                />
                 {/* {
                     !this.state.language ?
                         <SelectYourLanguage language={this.state.language || "english"} onSelectYourLanguage={this.onSelectYourLanguage} /> :
