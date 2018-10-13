@@ -18,104 +18,79 @@ class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // requestedLanguage: null,
-            // requestedUserType: null,
             language: null,
             userType: null,
-            step: 0,
-            online: false
+            userInformation: null,
+            step: "language",
+            onlineStatus: false
         };
     }
-
-    onSelectYourLanguage = language => this.setState({language, step: 1});
-
-    onChooseUser = userType => this.setState({userType, step: 2});
-
-    handleToggleOnline = data => {
-        let step = 3;
-        if(this.state.online) {
-            step = 2;
+    getSteps() {
+        if(this.state.userType === UserTypes.TRANSLATOR) {
+            return ["language", "userType", "translator_spokenLanguages", "translator_onlineStatus", "translator_next"];
         }
-        this.setState(prevState => ({online: !prevState.online, step}));
+        if(this.state.userType === UserTypes.USER) {
+            return ["language", "userType", "user_information", "user_callInformation", "user_next"];
+        }
+        return ["language", "userType"];
+    }
+    nextStep() {
+        const steps = this.getSteps();
+        //console.log("####! nextStep", steps, this.state.step);
+        const currentStepIndex = steps.indexOf(this.state.step);
+        this.setState({step: steps[currentStepIndex + 1]});
     }
 
+    componentDidMount() {
+        // Handle data update from service
+        Model.on("state.userType", userType => {
+            this.setState({userType}, () => {
+                if(this.state.step === "userType") return this.nextStep();
+            });
+        });
+        Model.on("state.language", language => {
+            this.setState({language}, () => {
+                if(this.state.step === "language") return this.nextStep();
+            });
+        });
+        Model.on("state.onlineStatus", onlineStatus => {
+            this.setState({onlineStatus}, () => {
+                if(!onlineStatus) return this.setState({step: "translator_onlineStatus"});
+                if(this.state.step === "translator_spokenLanguages" && onlineStatus) return this.nextStep();
+            });
+        });
+        Model.on("state.userInformation", userInformation => {
+            this.setState({userInformation}, () => {
+                if(this.state.step === "user_information") return this.nextStep();
+            });
+        });
+    }
+
+    // Push changes to service
+    onSelectYourLanguage = language => Model.setLanguage(language);
+    onChooseUser = userType => Model.setUserType(userType);
+    handleToggleOnline = translatorInformation =>  Model.setOnlineStatus({onlineStatus: !this.state.onlineStatus, translatorInformation});
+    sendUserInformation = userInformation => Model.setUserInformation(userInformation); 
+    sendCallInformation = callInformation => Model.requestCall(callInformation);
+    // @TODO add this back
     goBackAStep = () => this.setState(prevState => ({step: prevState.step - 1}));
 
-    sendUserInformation = userInformation => {
-        console.log("userInformation!", userInformation);
-        this.setState({step: 3});
-    }
-
-    sendCallInformation = callInformation => {
-        console.log("callInformation!!", callInformation);
-        this.setState({step: 4});
-    }
-
-
-    // onSelectYourLanguage = requestedLanguage => {
-    //     this.setState({requestedLanguage, step: 1});
-    //     Model.setNativeLanguage(requestedLanguage);
-    // }
-
-    // onChooseUser = requestedUserType => {
-    //     this.setState({requestedUserType});
-    //     Model.setRole(requestedUserType);
-    // }
-
-    // componentDidMount() {
-    //     Model.on("test", () => {
-    //         console.log("test received");
-    //     });
-    //     Model.send("api.test", {message: "hello"});
-    //     Model.on("state.role", userType => {
-    //         this.setState({userType});
-    //     });
-    // }
 
     render() {
         return (
             <Grid>
-                    {this.state.step > 0 && this.state.step < 3 && <Button onClick={this.goBackAStep}>Go Back!</Button>}
                     {
                         {
-                            0: () => <SelectYourLanguage language={this.state.language} onSelectYourLanguage={this.onSelectYourLanguage} />,
-                            1: () => <UserChooser onChooseUser={this.onChooseUser} />,
-                            2: userType => ({
-                                [UserTypes.TRANSLATOR]: <SpokenLanguages handleToggleOnline={this.handleToggleOnline} online={this.state.online} />,
-                                [UserTypes.USER]: <UserInformation chosenLanguage={this.state.language} sendUserInformation={this.sendUserInformation} />
-                            }[userType]),
-                            3: userType => ({
-                                [UserTypes.TRANSLATOR]: <Online online={this.state.online} toggleOnline={this.handleToggleOnline} />,
-                                [UserTypes.USER]: <CallInformation chosenLanguage={this.state.language} sendCallInformation={this.sendCallInformation} />
-                            }[userType]),
-                            4: userType => ({
-                                [UserTypes.TRANSLATOR]: <h1></h1>,
-                                [UserTypes.USER]: <h1>step 4</h1>
-                            }[userType])
-                        }[this.state.step](this.state.userType)
+                            "language": () => <SelectYourLanguage language={this.state.language} onSelectYourLanguage={this.onSelectYourLanguage} />,
+                            "userType": () => <UserChooser onChooseUser={this.onChooseUser} />,
+                            "translator_spokenLanguages": () => <SpokenLanguages handleToggleOnline={this.handleToggleOnline} online={this.state.onlineStatus} />,
+                            "translator_onlineStatus": () => <Online online={this.state.onlineStatus} toggleOnline={this.handleToggleOnline} />,
+                            "translator_next": () => <div>done???(translator)</div>,
+                            "user_information": () => <UserInformation chosenLanguage={this.state.language} sendUserInformation={this.sendUserInformation} />,
+                            "user_callInformation": () => <CallInformation chosenLanguage={this.state.language} sendCallInformation={this.sendCallInformation} />,
+                            "user_next": () => <div>done??? (user)</div>,
+                        }[this.state.step]()
                     }
-                    {/* Requested User Type: {this.state.requestedUserType}
-                    User Type: {this.state.userType}
-                    <button onClick={(event) => {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        this.onChooseUser("USER");
-                    }}>User</button>
-                    <SpokenLanguages
-                        onGoOnline={this.onGoOnline}
-                        languageOptions={[
-                            {label: "English", value: "english"},
-                            {label: "Eskimo", value: "eskimo"},
-                            {label: "Potato Language", value: "potato_language"},
-                            {label: "Swiss", value: "swiss"}
-                        ]}
-                    />
-                    <Grid container item>
-                        <UserInformation />
-                    </Grid>
-                    <Grid container item>
-                        <CallInformation />
-                    </Grid> */}
             </Grid>
         );
     }

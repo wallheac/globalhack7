@@ -9,7 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import languages from "../../test/languages";
 import userInformation from "../translateText/userInformation";
 
-class UserForm extends Component {
+export default class UserInformation extends Component {
     static propTypes = {
         chosenLanguage: propTypes.string.isRequired,
         sendUserInformation: propTypes.func
@@ -100,5 +100,3 @@ class UserForm extends Component {
         )
     }
 }
-
-export default UserForm;

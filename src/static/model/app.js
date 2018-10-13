@@ -33,11 +33,21 @@ class Model extends EventEmitter {
             console.error("Error receiving message", error, rawMessage);
         }
     }
-    setNativeLanguage(language) {
-        return this.send("api.setNativeLanguage", language);
+    setLanguage(language) {
+        return this.send("api.setLanguage", language);
     }
-    setRole(role) {
-        return this.send("api.setRole", role);
+    setUserType(userType) {
+        return this.send("api.setUserType", userType);
+    }
+    setOnlineStatus(status) {
+        return this.send("api.setOnlineStatus", status);
+    }
+    setUserInformation(userInformation) {
+        return this.send("api.setUserInformation", userInformation);
+    }
+    requestCall(call) {
+        const callId = Math.floor(Math.random() * 1000000);
+        return this.send("api.requestCall", {callId, ...call});
     }
 }
 export default new Model();

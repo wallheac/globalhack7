@@ -6,7 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import languages from "../../test/languagesInNative";
 import callInformation from "../translateText/callInformation";
-class UserForm extends Component {
+export default class CallInformation extends Component {
     static propTypes = {
         chosenLanguage: propTypes.string.isRequired,
         sendCallInformation: propTypes.func
@@ -126,5 +126,3 @@ class UserForm extends Component {
         )
     }
 }
-
-export default UserForm;
