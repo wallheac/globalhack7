@@ -4,4 +4,5 @@ target
 npm-debug.log
 tmp
 .*.swp
+.*.swo
 .session.vim
