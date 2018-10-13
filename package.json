@@ -8,7 +8,7 @@
     "build-ui": "webpack --env.production",
     "build": "npm run build-ui && npm run build-api",
     "api-dev-server": "cross-env port=9081 nodemon --watch src/api node_modules/@babel/node/lib/babel-node.js src/api/app.js",
-    "ui-dev-server": "webpack-dev-server",
+    "ui-dev-server": "webpack-dev-server --host 0.0.0.0",
     "start": "node dist/api/app.js"
   },
   "author": "Hui WU <huisen.wu@gmail.com>",
