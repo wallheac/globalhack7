@@ -1,13 +1,13 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
-import {Dialog, DialogTitle, IconButton, Typography, Grid} from "@material-ui/core";
+import {List, ListItem, ListItemText, Button, Dialog, DialogTitle, IconButton, Typography, Grid} from "@material-ui/core";
 import {CheckCircle, Cancel} from '@material-ui/icons';
 
 class CallNotification extends PureComponent {
     render() {
         return(
             <Dialog open={this.props.show}>
-            <DialogTitle>Accept Call</DialogTitle>
+                <DialogTitle>Accept Call</DialogTitle>
                 <List>
                     <ListItem>
                         <Button onClick={this.props.onAcceptCall}>
@@ -23,13 +23,10 @@ class CallNotification extends PureComponent {
                         </Button>
                         <ListItemText>
                             Decline
-                        </Typography>
-                        <IconButton onClick={this.handleDecline}>
-                            <Cancel />
-                        </IconButton>
-                    </Grid>
-                </Grid>
-                </Dialog>
+                        </ListItemText>
+                    </ListItem>
+                </List>
+            </Dialog>
         );
     };
 }
