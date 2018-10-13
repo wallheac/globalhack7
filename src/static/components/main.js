@@ -11,6 +11,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Paper from "@material-ui/core/Paper";
 import UserInformation from "./user/userInformation"
 import CallInformation from "./user/callInformation"
+import Online from "./translator/online";
 
 import Model from "../model/app";
 class Main extends Component {
@@ -31,10 +32,11 @@ class Main extends Component {
     onChooseUser = userType => this.setState({userType, step: 2});
 
     handleToggleOnline = data => {
-        if(!this.state.online) {
-            console.log("Now we're going to send the data somehwere...");
+        let step = 3;
+        if(this.state.online) {
+            step = 2;
         }
-        this.setState(prevState => ({online: !prevState.online}));
+        this.setState(prevState => ({online: !prevState.online, step}));
     }
 
     goBackAStep = () => this.setState(prevState => ({step: prevState.step - 1}));
@@ -72,9 +74,9 @@ class Main extends Component {
                                 [UserTypes.USER]: <UserInformation chosenLanguage="en" />
                             }[userType]),
                             3: userType => ({
-                                [UserTypes.TRANSLATOR]: null,
+                                [UserTypes.TRANSLATOR]: <Online online={this.state.online} toggleOnline={this.handleToggleOnline} />,
                                 [UserTypes.USER]: <UserInformation chosenLanguage="en" />
-                            }(userType))
+                            }[userType])
                         }[this.state.step](this.state.userType)
                     }
                     {/* Requested User Type: {this.state.requestedUserType}
