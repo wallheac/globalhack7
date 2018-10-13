@@ -1,18 +1,13 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
-import Dialog from "@material-ui/core/Dialog";
-import  DialogTitle from "@material-ui/core/DialogTitle";
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import {CheckCircle, Cancel} from '@material-ui/icons';
+import {List, ListItem, ListItemText, Button, Dialog, DialogTitle, IconButton, Typography, Grid} from "@material-ui/core";
 
 class CallNotification extends PureComponent {
     render() {
         return(
             <Dialog open={this.props.show}>
-            <DialogTitle>Accept Call</DialogTitle>
+                <DialogTitle>Accept Call</DialogTitle>
                 <List>
                     <ListItem>
                         <Button onClick={this.props.onAcceptCall}>
@@ -47,6 +42,3 @@ CallNotification.defaultProps = {
 };
 
 export default CallNotification;
-
-
-
