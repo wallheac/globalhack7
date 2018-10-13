@@ -64,13 +64,13 @@ class Main extends Component {
     render() {
         return (
             <Grid>
-                    {this.state.step > 0 && <Button onClick={this.goBackAStep}>Go Back!</Button>}
+                    {this.state.step > 0 && this.state.step < 3 && <Button onClick={this.goBackAStep}>Go Back!</Button>}
                     {
                         {
                             0: () => <SelectYourLanguage language={this.state.language} onSelectYourLanguage={this.onSelectYourLanguage} />,
                             1: () => <UserChooser onChooseUser={this.onChooseUser} />,
                             2: userType => ({
-                                [UserTypes.TRANSLATOR]: <SpokenLanguages languageOptions={[{label: "English", value: "english"}]} handleToggleOnline={this.handleToggleOnline} online={this.state.online} />,
+                                [UserTypes.TRANSLATOR]: <SpokenLanguages handleToggleOnline={this.handleToggleOnline} online={this.state.online} />,
                                 [UserTypes.USER]: <UserInformation chosenLanguage="en" />
                             }[userType]),
                             3: userType => ({

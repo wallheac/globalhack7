@@ -6,6 +6,7 @@ import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import ToggleOnlineButton from "./toggleOnlineButton";
+import Languages from "../../test/languages";
 
 class SpokenLanguages extends Component {
     constructor(props) {
@@ -50,7 +51,7 @@ class SpokenLanguages extends Component {
     onChangeName = event => this.setState({name: event.target.value});
 
     render() {
-        const languages = this.props.languageOptions.filter(language => !this.state.selectedLanguages.includes(language.value));
+        const languages = Languages.filter(language => !this.state.selectedLanguages.includes(language.language));
         const hasLanguages = languages && Array.isArray(languages) && languages.length > 0;
         return (
             <Grid item container direction="column">
@@ -74,9 +75,9 @@ class SpokenLanguages extends Component {
                         {
                             hasLanguages ? languages.map(language => (
                                 <MenuItem
-                                    key={language.value}
-                                    value={language.value}>
-                                    {language.label}
+                                    key={language.language}
+                                    value={language.language}>
+                                    {language.name}
                                 </MenuItem>
                             )) :
                             <MenuItem>null</MenuItem>
@@ -85,12 +86,13 @@ class SpokenLanguages extends Component {
                     {
                         this.state.selectedLanguages
                             .map(languageValue => {
-                                const language = this.props.languageOptions.find(lang => languageValue === lang.value);
+                                const language = Languages.find(lang => lang.language === languageValue);
+                                console.log("language: ", language);
                                 return <Chip
-                                    key={language.value}
-                                    label={language.label}
-                                    value={language.value}
-                                    onDelete={this.onDeleteChip(language.value)}
+                                    key={language.language}
+                                    label={language.name}
+                                    value={language.language}
+                                    onDelete={this.onDeleteChip(language.language)}
                                 />
                             })
                     }
@@ -104,13 +106,8 @@ class SpokenLanguages extends Component {
 };
 
 SpokenLanguages.propTypes = {
-    languageOptions: PropTypes.array,
     handleToggleOnline: PropTypes.func.isRequired,
     online: PropTypes.bool.isRequired
-};
-
-SpokenLanguages.defaultProps = {
-    languageOptions: null
 };
 
 export default SpokenLanguages;

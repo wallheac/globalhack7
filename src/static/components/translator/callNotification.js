@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import Dialog from "@material-ui/core/Dialog";
 import  DialogTitle from "@material-ui/core/DialogTitle";
@@ -8,17 +8,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import {CheckCircle, Cancel} from '@material-ui/icons';
 
-class CallNotification extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            acceptCall: null
-        }``
-    }
-
+class CallNotification extends PureComponent {
     render() {
         return(
-            <Dialog open={true}>
+            <Dialog open={this.props.show}>
             <DialogTitle>Accept Call</DialogTitle>
                 <List>
                     <ListItem>
@@ -44,12 +37,11 @@ class CallNotification extends Component {
 }
 
 CallNotification.propTypes = {
-    openCallNotification: PropTypes.bool,
-    classes: PropTypes.object.isRequired
+    show: PropTypes.bool
 };
 
 CallNotification.defaultProps = {
-    openCallNotification: false
+    show: false
 };
 
 export default CallNotification;
