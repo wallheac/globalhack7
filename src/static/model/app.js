@@ -7,7 +7,7 @@ class Model extends EventEmitter {
                 this.connection.addEventListener("open", () => {
                     resolve(this.connection);
                 });
-                this.connection.addEventListener("onmessage", (...args) => {
+                this.connection.addEventListener("message", (...args) => {
                     this.handleMessage(...args);
                 });
                 this.connection.addEventListener("onerror", (err) => {
@@ -17,19 +17,21 @@ class Model extends EventEmitter {
         }
         return this.connectionPromise;
     }
-    async send(topic, obj) {
+    async send(topic, content) {
         const connection = await this.getConnection();
-        console.log("sending ", topic, obj);
-        this.emit("test", obj);
-        const message = JSON.stringify({topic, obj});
+        console.log("sending ", topic, content);
+        const message = JSON.stringify({topic, content});
         console.log("raw message to send", message);
         connection.send(message);
     }
     handleMessage(rawMessage) {
-        const message = JSON.parse(rawMessage);
-        console.log(message);
-        this.emit(message.topic, message.content);
+        try {
+            const message = JSON.parse(rawMessage.data);
+            console.log("received", message);
+            this.emit(message.topic, message.content);
+        } catch (error) {
+            console.error("Error receiving message", error, rawMessage);
+        }
     }
-
 }
 export default new Model();

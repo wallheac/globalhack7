@@ -9,13 +9,12 @@ class Main extends PureComponent {
         Model.on("test", () => {
             console.log("test received");
         });
-        Model.send("testclient", {message: "hello"});
+        Model.send("api.test", {message: "hello"});
     }
     render() {
         return (
             <div>
                 <Header />
-                <CoursesList />
             </div>
         );
     }

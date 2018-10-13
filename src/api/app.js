@@ -4,6 +4,23 @@ import path from "path";
 import url from "url";
 import WebSocket from "ws";
 
+class Service {
+    test(ws, session, content) {
+        console.log("got test request", content, session);
+        ws.send(JSON.stringify({topic: "state.test", content: {message: "hello"}}));
+    }
+    setNativeLanguage(ws, session, content) {
+        session.nativeLanguage = session;
+    }
+    setRole(ws, session, content) {
+        if(content !== "USER" && content !== "TRANSLATOR") {
+            console.error("invalid role");
+            return;
+        }
+        session.role = content;
+    }
+};
+const service = new Service();
 const app = express();
 app.use("/static", express.static(path.join(process.cwd(), "dist", "static"), {index: "index.html"}));
 const server = http.createServer(app);
@@ -15,11 +32,26 @@ wss.on("connection", (ws, req) => {
         console.log("received: %s", message);
         try {
             const body = JSON.parse(message);
+            if(!body.topic) {
+                console.log("invalid message", message);
+                return;
+            }
+            if(body.topic.startsWith("api.")) {
+                const method = body.topic.substr(4);
+                if(!typeof service[method] === "function") {
+                    console.log("unhandled service method", method, message);
+                    return;
+                }
+                const sess = sessions.get(ws);
+                (service[method])(ws, sess, body);
+            } else {
+                console.log("unknown message type", message);
+                return;
+            }
         } catch(error) {
-            ws.send(JSON.stringify(error));
+            console.log("error!!!", error);
         }
     });
-    ws.send("Connected to WebSocket server");
 });
 server.on("upgrade", (req, socket, head) => {
     const pathname = url.parse(req.url).pathname;
