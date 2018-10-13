@@ -49,6 +49,11 @@ module.exports = function(env) {
                 "/static": {
                     target: "http://localhost:9080",
                     pathRewrite: {"^/static": ""}
+                },
+                "/test": {
+                    target: "ws://localhost:9081",
+                    pathRewrite: {"^/test": ""},
+                    ws: true
                 }
             },
             open: true,

@@ -1,11 +1,23 @@
 import express from "express";
+import http from "http";
 import path from "path";
-import router from "./router";
+import WebSocket from "ws";
 
 const app = express();
+app.use("/static", express.static(path.join(process.cwd(), "dist", "static"), {index: "index.html"}));
 const port = process.env.port || 9080;
-
-app.use("/api", router);
-app.use("/static", express.static(path.join(__dirname, "../static"), {index: "index.html"}));
-
-app.listen(port, () => console.log(`Listening on port ${port}!`));
+const server = app.listen(port, () => console.log(`Listening on port ${port}!`));
+const wss = new WebSocket.Server({server});
+const sessions = new Map();
+wss.on("connection", (ws, req) => {
+    sessions.set(ws, {});
+    ws.on("message", message => {
+        console.log("received: %s", message);
+        try {
+            const body = JSON.parse(message);
+        } catch(error) {
+            ws.send(JSON.stringify(error));
+        }
+    });
+    ws.send("Connected to WebSocket server");
+});
