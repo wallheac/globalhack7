@@ -5,6 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import ToggleOnlineButton from "./toggleOnlineButton";
 
 class SpokenLanguages extends Component {
     constructor(props) {
@@ -15,39 +16,48 @@ class SpokenLanguages extends Component {
         }
     }
 
-    onSelectLanguage = event => this.setState(prevState => {
-        const selectedLanguages = prevState.selectedLanguages;
-        selectedLanguages.push(event.target.value);
-        return {selectedLanguages};
-    });
-
-    onDeleteChip = item => () => this.setState(prevState => {
-        const selectedLanguages = prevState.selectedLanguages;
-        const indexToDelete = this.state.selectedLanguages.indexOf(item);
-        if(selectedLanguages && selectedLanguages.length > 1) {
-            const beginning = selectedLanguages.slice(0, indexToDelete);
-            const end = selectedLanguages.slice(indexToDelete + 1);
-            return {selectedLanguages: beginning.concat(end)}
+    onSelectLanguage = event => {
+        if(!this.props.online) {
+            this.setState(prevState => {
+                const selectedLanguages = prevState.selectedLanguages;
+                selectedLanguages.push(event.target.value);
+                return {selectedLanguages};
+            });
         }
-        return {selectedLanguages: []}
-    });
+    };
 
-    onChangeName = event => this.setState({name: event.target.value});
+    onDeleteChip = item => () => {
+        if(!this.props.online) {
+            this.setState(prevState => {
+                const selectedLanguages = prevState.selectedLanguages;
+                const indexToDelete = this.state.selectedLanguages.indexOf(item);
+                if(selectedLanguages && selectedLanguages.length > 1) {
+                    const beginning = selectedLanguages.slice(0, indexToDelete);
+                    const end = selectedLanguages.slice(indexToDelete + 1);
+                    return {selectedLanguages: beginning.concat(end)}
+                }
+                return {selectedLanguages: []}
+            });
+        }
+    };
 
-    handleGoOnline = () => {
-        if(Array.isArray(this.state.selectedLanguages) && this.state.selectedLanguages.length > 0) {
-            this.props.onGoOnline({name: this.state.name, selectedLanguages: this.state.selectedLanguages});
+    onToggleOnline = () => {
+        if(this.state.name && Array.isArray(this.state.selectedLanguages) && this.state.selectedLanguages.length > 0) {
+            this.props.handleToggleOnline({name: this.state.name, selectedLanguages: this.state.selectedLanguages});
         }
     }
+
+    onChangeName = event => this.setState({name: event.target.value});
 
     render() {
         const languages = this.props.languageOptions.filter(language => !this.state.selectedLanguages.includes(language.value));
         const hasLanguages = languages && Array.isArray(languages) && languages.length > 0;
         return (
-            <Grid item container direction="column" spacing={24}>
+            <Grid item container direction="column">
                 <Grid item>
                     <TextField
                         fullWidth
+                        disabled={this.props.online}
                         label="Name"
                         onChange={this.onChangeName}
                     />
@@ -56,7 +66,7 @@ class SpokenLanguages extends Component {
                     <TextField
                         select
                         fullWidth
-                        disabled={languages.length === 0}
+                        disabled={languages.length === 0 || this.props.online}
                         label="Please Select Your Language"
                         placeholder="Please Select Your Language"
                         value=""
@@ -86,17 +96,17 @@ class SpokenLanguages extends Component {
                     }
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" color="primary" onClick={this.handleGoOnline}>Go Online!</Button>
+                    <ToggleOnlineButton online={this.props.online} toggleOnline={this.onToggleOnline} />
                 </Grid>
             </Grid>
-
         );
     }
 };
 
 SpokenLanguages.propTypes = {
     languageOptions: PropTypes.array,
-    onGoOnline: PropTypes.func.isRequired
+    handleToggleOnline: PropTypes.func.isRequired,
+    online: PropTypes.bool.isRequired
 };
 
 SpokenLanguages.defaultProps = {

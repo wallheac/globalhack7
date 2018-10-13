@@ -63,7 +63,7 @@ class UserForm extends Component {
     render() {
         return (
             <div>
-                <Grid container spacing={40} style={{padding: 24}}>
+                <Grid container style={{padding: 24}}>
                     <form>
                         <Grid item>
                             <TextField

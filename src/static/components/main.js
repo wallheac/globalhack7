@@ -21,7 +21,8 @@ class Main extends Component {
             // requestedUserType: null,
             language: null,
             userType: null,
-            step: 0
+            step: 0,
+            online: false
         };
     }
 
@@ -29,7 +30,12 @@ class Main extends Component {
 
     onChooseUser = userType => this.setState({userType, step: 2});
 
-    onGoOnline = data => console.log("### this is the data: ", data);
+    handleToggleOnline = data => {
+        if(!this.state.online) {
+            console.log("Now we're going to send the data somehwere...");
+        }
+        this.setState(prevState => ({online: !prevState.online}));
+    }
 
     goBackAStep = () => this.setState(prevState => ({step: prevState.step - 1}));
 
@@ -55,17 +61,20 @@ class Main extends Component {
 
     render() {
         return (
-            <Fragment>
-                <Grid container>
+            <Grid>
                     {this.state.step > 0 && <Button onClick={this.goBackAStep}>Go Back!</Button>}
                     {
                         {
                             0: () => <SelectYourLanguage language={this.state.language} onSelectYourLanguage={this.onSelectYourLanguage} />,
                             1: () => <UserChooser onChooseUser={this.onChooseUser} />,
                             2: userType => ({
-                                [UserTypes.TRANSLATOR]: <SpokenLanguages languageOptions={[{label: "English", value: "english"}]} onGoOnline={this.onGoOnline} />,
+                                [UserTypes.TRANSLATOR]: <SpokenLanguages languageOptions={[{label: "English", value: "english"}]} handleToggleOnline={this.handleToggleOnline} online={this.state.online} />,
                                 [UserTypes.USER]: <UserInformation chosenLanguage="en" />
                             }[userType]),
+                            3: userType => ({
+                                [UserTypes.TRANSLATOR]: null,
+                                [UserTypes.USER]: <UserInformation chosenLanguage="en" />
+                            }(userType))
                         }[this.state.step](this.state.userType)
                     }
                     {/* Requested User Type: {this.state.requestedUserType}
@@ -90,8 +99,7 @@ class Main extends Component {
                     <Grid container item>
                         <CallInformation />
                     </Grid> */}
-                </Grid>
-            </Fragment>
+            </Grid>
         );
     }
 }
