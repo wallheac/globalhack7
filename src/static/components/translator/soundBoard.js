@@ -29,25 +29,37 @@ class SoundBoard extends Component {
         return (
             <Fragment>
                 <Grid>
-                    <Grid item>
-                        <Button>Address</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button>Passport #</Button>
-                    </Grid>
-                    <Grid item>
-                        <Button>Alien #</Button>
-                    </Grid>
+                    {this.props.address &&
+                        <Grid item>
+                            <Button>Address</Button>
+                        </Grid>
+                    }
+                    {this.props.passportNumber &&
+                        <Grid item>
+                            <Button>Passport #</Button>
+                        </Grid>
+                    }
+                    {this.props.alienNumber &&
+                        <Grid item>
+                            <Button>Alien #</Button>
+                        </Grid>
+                    }
                 </Grid>
             </Fragment>
         );
     };
 }
 SoundBoard.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    address: PropTypes.string,
+    passportNumber: PropTypes.string,
+    alienNumber: PropTypes.string
 };
 
 SoundBoard.defaultProps = {
+    address: null,
+    passportNumber: null,
+    alienNumber: null
 };
 
 export default withStyles(styles)(SoundBoard);
