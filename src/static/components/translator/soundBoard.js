@@ -25,23 +25,35 @@ class SoundBoard extends Component {
         }
     }
 
+    sendAddress () {
+        //TODO
+    }
+
+    sendPassport() {
+        //TODO
+    }
+
+    sendAlienNumber() {
+        //TODO
+    }
+
     render() {
         return (
             <Fragment>
                 <Grid>
                     {this.props.address &&
                         <Grid item>
-                            <Button>Address</Button>
+                            <Button onClick={this.sendAddress}>Address</Button>
                         </Grid>
                     }
                     {this.props.passportNumber &&
                         <Grid item>
-                            <Button>Passport #</Button>
+                            <Button onClick={this.sendPassport}>Passport #</Button>
                         </Grid>
                     }
                     {this.props.alienNumber &&
                         <Grid item>
-                            <Button>Alien #</Button>
+                            <Button onClick={this.sendAlienNumber}>Alien #</Button>
                         </Grid>
                     }
                 </Grid>
