@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import Grid from "@material-ui/core/Grid";
 import SelectYourLanguage from "./selectYourLanguage";
 import UserChooser from "./userChooser";
-// import UserForms from "./UserForms";
 import SpokenLanguages from "./translator/spokenLanguages";
 
 class Main extends Component {
@@ -21,17 +20,19 @@ class Main extends Component {
     onGoOnline = () => console.log("Go Online!");
 
     render() {
+        const language = this.state.language || "english";
         return (
-            <Grid container>
-                <SpokenLanguages
-                    onGoOnline={this.onGoOnline}
-                />
-                {/* {
-                    !this.state.language ?
-                        <SelectYourLanguage language={this.state.language || "english"} onSelectYourLanguage={this.onSelectYourLanguage} /> :
-                        <UserChooser onChooseUser={this.onChooseUser} />
-                } */}
-            </Grid>
+                <Grid container>
+                    <SpokenLanguages
+                        onGoOnline={this.onGoOnline}
+                        languageOptions={[
+                            {label: "English", value: "english"},
+                            {label: "Eskimo", value: "eskimo"},
+                            {label: "Potato Language", value: "potato_language"},
+                            {label: "Swiss", value: "swiss"}
+                        ]}
+                    />
+                </Grid>
         );
     }
 }

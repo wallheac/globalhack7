@@ -61,13 +61,14 @@ class SpokenLanguages extends Component {
                         value={hasLanguages && languages[0].value}
                         onChange={this.onSelectLanguage}>
                         {
-                            hasLanguages && languages.map(language => (
+                            hasLanguages ? languages.map(language => (
                                 <MenuItem
                                     key={language.value}
                                     value={language.value}>
                                     {language.label}
                                 </MenuItem>
-                            ))
+                            )) :
+                            <MenuItem>null</MenuItem>
                         }
                     </TextField>
                     {
@@ -98,12 +99,7 @@ SpokenLanguages.propTypes = {
 };
 
 SpokenLanguages.defaultProps = {
-    languageOptions: [
-        {label: "English", value: "english"},
-        {label: "Eskimo", value: "eskimo"},
-        {label: "Potato Language", value: "potato_language"},
-        {label: "Swiss", value: "swiss"}
-    ]
+    languageOptions: null
 };
 
 export default SpokenLanguages;
