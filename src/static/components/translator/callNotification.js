@@ -11,6 +11,14 @@ class CallNotification extends Component {
         }
     }
 
+    handleAccept() {
+        //TODO
+    }
+
+    handleDecline() {
+        //TODO
+    }
+
     render() {
         return(
             <Dialog open={true}>
@@ -20,7 +28,7 @@ class CallNotification extends Component {
                         <Typography>
                             Accept
                         </Typography>
-                        <IconButton>
+                        <IconButton onClick={this.handleAccept}>
                             <CheckCircle/>
                         </IconButton>
                     </Grid>
@@ -28,7 +36,7 @@ class CallNotification extends Component {
                         <Typography>
                             Decline
                         </Typography>
-                        <IconButton>
+                        <IconButton onClick={this.handleDecline}>
                             <Cancel />
                         </IconButton>
                     </Grid>
