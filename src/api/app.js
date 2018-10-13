@@ -5,12 +5,17 @@ import url from "url";
 import WebSocket from "ws";
 
 class Service {
+    send(ws, topic, content) {
+        ws.send(JSON.stringify({topic, content}));
+    }
     test(ws, session, content) {
         console.log("got test request", content, session);
+        this.send(ws, "state.test", {message: "hello"});
         ws.send(JSON.stringify({topic: "state.test", content: {message: "hello"}}));
     }
     setNativeLanguage(ws, session, content) {
         session.nativeLanguage = session;
+        this.send(ws, "state.nativeLanguage", session.nativeLanguage);
     }
     setRole(ws, session, content) {
         if(content !== "USER" && content !== "TRANSLATOR") {
@@ -18,7 +23,7 @@ class Service {
             return;
         }
         session.role = content;
-        ws.send(JSON.stringify({topic: "state.role", content: session.role}));
+        this.send(ws, "state.role", session.role);
     }
 };
 const service = new Service();
