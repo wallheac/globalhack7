@@ -15,7 +15,7 @@ class CallNotification extends PureComponent {
             <DialogTitle>Accept Call</DialogTitle>
                 <List>
                     <ListItem>
-                        <Button>
+                        <Button onClick={this.props.onAcceptCall}>
                             <CheckCircle/>
                         </Button>
                         <ListItemText>
@@ -23,7 +23,7 @@ class CallNotification extends PureComponent {
                         </ListItemText>
                     </ListItem>
                     <ListItem>
-                        <Button>
+                        <Button onClick={this.props.onDeclineCall}>
                             <Cancel />
                         </Button>
                         <ListItemText>
@@ -37,7 +37,9 @@ class CallNotification extends PureComponent {
 }
 
 CallNotification.propTypes = {
-    show: PropTypes.bool
+    show: PropTypes.bool,
+    onAcceptCall: PropTypes.func.isRequired,
+    onDeclineCall: PropTypes.func.isRequired
 };
 
 CallNotification.defaultProps = {

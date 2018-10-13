@@ -14,15 +14,23 @@ class Online extends PureComponent {
     }
 
     componentDidMount() {
-        setTimeout(() => this.setState({incomingCall: false}), 1000);
+        setTimeout(() => this.setState({incomingCall: true}), 4000);
     }
+
+    onAcceptCall = () => console.log("Okay. Thanks for accepting the call");
+
+    onDeclineCall = () => this.setState({incomingCall: false});
 
     render() {
         return (
             <Grid item>
                 <Typography>You Are Available!</Typography>
                 <ToggleOnlineButton online={this.props.online} toggleOnline={this.props.toggleOnline} />
-                <CallNotification show={this.state.incomingCall} />
+                <CallNotification
+                    show={this.state.incomingCall}
+                    onAcceptCall={this.onAcceptCall}
+                    onDeclineCall={this.onDeclineCall}
+                />
             </Grid>
         );
     };
