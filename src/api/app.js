@@ -1,5 +1,6 @@
 import express from "express";
-import http from "http";
+import fs from "fs";
+import https from "https";
 import path from "path";
 import url from "url";
 import WebSocket from "ws";
@@ -111,7 +112,9 @@ class Service {
 const service = new Service();
 const app = express();
 app.use("/static", express.static(path.join(process.cwd(), "dist", "static"), {index: "index.html"}));
-const server = http.createServer(app);
+const key = fs.readFileSync(path.join(process.cwd(), "server.key"), "utf8");
+const cert = fs.readFileSync(path.join(process.cwd(), "server.crt"), "utf8");
+const server = https.createServer({key, cert}, app);
 const wss = new WebSocket.Server({noServer: true});
 wss.on("connection", (ws, req) => {
     sessions.set(ws, {});

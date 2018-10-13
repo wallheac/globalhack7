@@ -3,7 +3,7 @@ class Model extends EventEmitter {
     getConnection() {
         if(!this.connectionPromise) {
             this.connectionPromise = new Promise((resolve, reject) => {
-                this.connection = new WebSocket(`ws://${window.location.host}/test`);
+                this.connection = new WebSocket(`wss://${window.location.host}/test`);
                 this.connection.addEventListener("open", () => {
                     resolve(this.connection);
                 });

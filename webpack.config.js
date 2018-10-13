@@ -40,18 +40,21 @@ module.exports = function(env) {
             extensions: [".js", ".json"]
         },
         devServer: {
+            https: true,
             contentBase: path.join(__dirname, "dist", "static"),
             index: "index.html",
             compress: true,
             port: 9080,
             proxy: {
                 "/static": {
-                    target: "http://localhost:9080",
-                    pathRewrite: {"^/static": ""}
+                    target: "https://localhost:9080",
+                    pathRewrite: {"^/static": ""},
+                    secure: false
                 },
                 "/test": {
-                    target: "ws://localhost:9081",
-                    ws: true
+                    target: "wss://localhost:9081",
+                    ws: true,
+                    secure: false
                 }
             },
             open: true,
