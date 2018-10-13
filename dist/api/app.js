@@ -121,7 +121,6 @@ wss.on("connection", function (ws, req) {
       console.log("error!!!", error);
     }
   });
-  ws.send('something');
 });
 server.on("upgrade", function (req, socket, head) {
   var pathname = _url.default.parse(req.url).pathname;

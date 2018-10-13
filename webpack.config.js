@@ -4,9 +4,12 @@ module.exports = function(env) {
     return {
         mode: env && env.production ? "production" : "development",
         context: path.resolve(__dirname, "src", "static"),
-        entry: "./index.js",
+        entry: {
+            "index": "./index.js",
+            "room/index": "./room/index.js"
+        },
         output: {
-            filename: "bundle.js",
+            filename: "[name].bundle.js",
             path: path.resolve(__dirname, "dist", "static")
         },
         module: {
