@@ -9,6 +9,7 @@ const calls = [];
 const onlineTranslators = new Set();
 
 class Service {
+    // @TODO these two methods need to be protected, so they can't be called from the client
     cleanUpSession(ws, session) {
         if(sessions.has(session)) sessions.delete(session);
         if(onlineTranslators.has(session)) onlineTranslators.delete(session);
@@ -44,6 +45,7 @@ class Service {
             return;
         }
 
+        if(!translatorInformation.selectedLanguages.includes(session.language)) translatorInformation.selectedLanguages.push(session.language);
         // add translators when they go online
         if(onlineStatus && !onlineTranslators.has(session)) {
             onlineTranslators.add(session);
@@ -70,10 +72,7 @@ class Service {
     }
     requestCall(ws, session, content) {
         console.log("received call request", content);
-        if(session.userType !== "USER") {
-            console.error("attempt to request call as a non-user");
-            return;
-        }
+        if(session.userType !== "USER") return console.error("attempt to request call as a non-user");
 
         if(!Array.isArray(session.callRequests)) session.callRequests = [];
         session.callRequests.push(content);
@@ -83,14 +82,30 @@ class Service {
 
         const availableTranslators = Array.from(onlineTranslators.values()).filter(ts => {
             console.log("check translator", ts);
+            // @TODO don't match translators that are already on calls
             const matches = ts.translatorInformation.selectedLanguages.includes(content.voiceLanguage);
             console.log("matches?", matches);
             return  matches;
         });
 
         console.log("available translators that match: ", availableTranslators);
+        if(availableTranslators.length > 0) {
+            const translator = availableTranslators[0]; // @TODO add algorithm to select translator
+            content.status = "AWAITING_RESPONSE";
+            translator.callInformation = {userSession: session, callRequest: content};
+            // @TODO clean up this object before sending it to the translator
+            this.send(translator, "state.callInformation", translator.callInformation.callRequest);
+        }
+        this.send(ws, "state.callRequests", session.callRequests);
+    }
+    acceptCall(ws, session, content) {
+        if(session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
+        if(!session.callInformation) return console.error("no call assigned to be accepted");
+        if(session.callInformation.callRequest.status !== "AWAITING_RESPONSE") return console.error("call not in status to be accepted");
 
-
+        session.callInformation.callRequest.status = "CONNECTED";
+        this.send(session, "state.callInformation", session.callInformation.callRequest);
+        this.send(session.callInformation.userSession, session.callInformation.userSession.callRequests);
     }
 };
 const service = new Service();
