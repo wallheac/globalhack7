@@ -12,14 +12,14 @@ const onlineTranslators = new Set();
 class Service {
     // @TODO these two methods need to be protected, so they can't be called from the client
     cleanUpSession(ws, session) {
-        if(sessions.has(session)) sessions.delete(session);
+        if(sessions.has(ws)) sessions.delete(ws);
         if(onlineTranslators.has(session)) onlineTranslators.delete(session);
     }
     send(ws, topic, content) {
         ws.send(JSON.stringify({topic, content}));
     }
     test(ws, session, content) {
-        console.log("got test request", content, session);
+        console.log("got test request", content);
         this.send(ws, "state.test", {message: "hello"});
         ws.send(JSON.stringify({topic: "state.test", content: {message: "hello"}}));
     }
@@ -147,7 +147,7 @@ wss.on("connection", (ws, req) => {
     ws.on("close", () => {
         const sess = sessions.get(ws);
         console.log("closed session", sess);
-        service.cleanUpSession(sess);
+        service.cleanUpSession(ws, sess);
     });
 });
 server.on("upgrade", (req, socket, head) => {
