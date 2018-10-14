@@ -54,7 +54,7 @@ function generatePrivateFiles(callId, userInformation) {
         value = _ref2[1];
 
     if (key === "name") return;
-    var filename = "../../dist/static/private/".concat(callId, "_").concat(correctKey, "_").concat(key, ".mp3");
+    var filename = "./dist/static/private/".concat(callId, "_").concat(correctKey, "_").concat(key, ".mp3");
     console.log("calling festival", value, filename);
 
     _festival.default.toSpeech(value, filename);

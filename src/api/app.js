@@ -26,7 +26,7 @@ function generatePrivateFiles(callId, userInformation) {
     const correctKey = getKey(callId);
     Object.entries(userInformation).map(([key, value]) => {
 	if(key === "name") return;
-        const filename = `../../dist/static/private/${callId}_${correctKey}_${key}.mp3`;
+        const filename = `./dist/static/private/${callId}_${correctKey}_${key}.mp3`;
         console.log("calling festival", value, filename);
         festival.toSpeech(value, filename);
     });
