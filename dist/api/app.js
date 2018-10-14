@@ -240,7 +240,11 @@ function () {
       var callId = session.callInformation.callRequest.callId;
       var correctKey = getKey(callId);
       callSubscribers[callId].forEach(function (subWs) {
-        _this.send(subWs, "playSound", "/static/private/".concat(callId, "_").concat(correctKey, "_").concat(content, ".mp3"));
+        try {
+          _this.send(subWs, "playSound", "/static/private/".concat(callId, "_").concat(correctKey, "_").concat(content, ".mp3"));
+        } catch (err) {
+          console.log("orphan web socket");
+        }
       });
     }
   }, {

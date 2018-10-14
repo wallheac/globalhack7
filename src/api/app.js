@@ -167,7 +167,11 @@ class Service {
         const correctKey = getKey(callId);
 
         callSubscribers[callId].forEach(subWs => {
-            this.send(subWs, "playSound", `/static/private/${callId}_${correctKey}_${content}.mp3`);
+            try {
+                this.send(subWs, "playSound", `/static/private/${callId}_${correctKey}_${content}.mp3`);
+            } catch (err) {
+                console.log("orphan web socket");
+            }
         });
     }
     subscribeCall(ws, session, {callId, key: submittedKey}) {
