@@ -35,7 +35,7 @@ class Online extends PureComponent {
     onDeclineCall = () => this.setState({callInformation: null});
 
     render() {
-        console.log("### this.state.callInformation: ", this.state.callInformation)
+        console.log("### this.state: ", this.state);
         return (
             <Grid item>
                 {
@@ -44,7 +44,7 @@ class Online extends PureComponent {
                             name={this.state.callInformation.callerName}
                             phoneNumber={this.state.callInformation.phoneNumber}
                             textToTranslate={this.state.callInformation.message}
-                            userInformation={this.props.userInformation}
+                            userInformation={this.state.callInformation.privateFields}
                         /> :
                         <div>
                             <Typography>You Are Available!</Typography>
