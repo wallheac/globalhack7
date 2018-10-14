@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import propTypes from "prop-types";
 import Lock from "@material-ui/icons/Lock";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
+import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import IconButton from "@material-ui/core/IconButton";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -12,7 +15,8 @@ import userInformation from "../translateText/userInformation";
 export default class UserInformation extends Component {
     static propTypes = {
         chosenLanguage: propTypes.string.isRequired,
-        sendUserInformation: propTypes.func
+        sendUserInformation: propTypes.func,
+        lastStep: propTypes.func
     }
     constructor(props) {
         super(props);
@@ -49,7 +53,7 @@ export default class UserInformation extends Component {
 
     render() {
         return (
-            <Grid container direction="column">
+            <Grid container direction="column" spacing={40}>
                 <Grid item>
                     <TextField
                         fullWidth
@@ -94,7 +98,19 @@ export default class UserInformation extends Component {
                 </Grid>
 
                 <Grid item>
-                    <Button onClick={this.continueForm} color="primary" size="large" variant="contained">{userInformation.CONTINUE[this.props.chosenLanguage]}</Button>
+
+                </Grid>
+                <Grid item container justify="center" alignItems="center">
+                    <Grid item style={{paddingRight:"100px"}}>
+                        <IconButton onClick={this.props.lastStep} size="large">
+                            <KeyboardArrowLeft style={{cursor: "pointer", fontSize: "45px"}} />
+                        </IconButton>
+                    </Grid>
+                    <Grid item>
+                        <IconButton onClick={this.continueForm} size="large">
+                            <KeyboardArrowRight style={{cursor: "pointer", fontSize: "45px"}} />
+                        </IconButton>
+                    </Grid>
                 </Grid>
             </Grid>
         )

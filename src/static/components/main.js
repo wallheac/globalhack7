@@ -35,11 +35,17 @@ class Main extends Component {
         }
         return ["language", "userType"];
     }
-    nextStep() {
+    nextStep = () => {
         const steps = this.getSteps();
         //console.log("####! nextStep", steps, this.state.step);
         const currentStepIndex = steps.indexOf(this.state.step);
         this.setState({step: steps[currentStepIndex + 1]});
+    }
+    lastStep = () => {
+        const steps = this.getSteps();
+        //console.log("####! nextStep", steps, this.state.step);
+        const currentStepIndex = steps.indexOf(this.state.step);
+        this.setState({step: steps[currentStepIndex - 1]});
     }
 
     componentDidMount() {
@@ -71,11 +77,8 @@ class Main extends Component {
     onSelectYourLanguage = language => Model.setLanguage(language);
     onChooseUser = userType => Model.setUserType(userType);
     handleToggleOnline = translatorInformation =>  Model.setOnlineStatus({onlineStatus: !this.state.onlineStatus, translatorInformation});
-    sendUserInformation = userInformation => Model.setUserInformation(userInformation); 
+    sendUserInformation = userInformation => Model.setUserInformation(userInformation);
     sendCallInformation = callInformation => Model.requestCall(callInformation);
-    // @TODO add this back
-    goBackAStep = () => this.setState(prevState => ({step: prevState.step - 1}));
-
 
     testTranslator() {
         this.onSelectYourLanguage("en");
@@ -112,16 +115,16 @@ class Main extends Component {
     }
     render() {
         return (
-            <Grid>
+            <Grid container alignContent="center" alignItems="center" justify="center" style={{height:"100%"}}>
                     {
                         {
                             "language": () => <SelectYourLanguage language={this.state.language} onSelectYourLanguage={this.onSelectYourLanguage} />,
-                            "userType": () => <UserChooser onChooseUser={this.onChooseUser} />,
-                            "translator_spokenLanguages": () => <SpokenLanguages handleToggleOnline={this.handleToggleOnline} online={this.state.onlineStatus} />,
+                            "userType": () => <UserChooser onChooseUser={this.onChooseUser} lastStep={this.lastStep} />,
+                            "translator_spokenLanguages": () => <SpokenLanguages handleToggleOnline={this.handleToggleOnline} lastStep={this.lastStep} online={this.state.onlineStatus} />,
                             "translator_onlineStatus": () => <Online online={this.state.onlineStatus} toggleOnline={this.handleToggleOnline} />,
                             "translator_next": () => <div>done???(translator)</div>,
-                            "user_information": () => <UserInformation chosenLanguage={this.state.language} sendUserInformation={this.sendUserInformation} />,
-                            "user_callInformation": () => <CallInformation chosenLanguage={this.state.language} sendCallInformation={this.sendCallInformation} />,
+                            "user_information": () => <UserInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendUserInformation={this.sendUserInformation} />,
+                            "user_callInformation": () => <CallInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendCallInformation={this.sendCallInformation} />,
                             "user_next": () => <div>done??? (user)</div>,
                         }[this.state.step]()
                     }

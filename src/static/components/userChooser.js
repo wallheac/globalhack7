@@ -11,11 +11,11 @@ class UserChooser extends PureComponent {
     render() {
         return (
             <Grid item container direction="column">
-                <Grid item container justify="center">
+                <Grid item container justify="center" style={{marginTop: "20px"}}>
                     <Typography>What are you here for?</Typography>
                 </Grid>
                 <Grid item container justify="center" alignItems="center">
-                    <Grid item>
+                    <Grid item style={{paddingRight:"10px"}}>
                         <Button onClick={this.handleUserClick(UserTypes.TRANSLATOR)} color="primary" size="large" variant="contained">{UserTypes.TRANSLATOR}</Button>
                     </Grid>
                     <Grid item>

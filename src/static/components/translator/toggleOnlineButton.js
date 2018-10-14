@@ -1,12 +1,21 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import Hearing from "@material-ui/icons/Hearing";
 
 function ToggleOnlineButton(props) {
     if(props.online) {
-        return <Button onClick={props.toggleOnline}>Go Offline</Button>;
+        return (
+            <IconButton onClick={props.toggleOnline} size="large">
+                <Hearing style={{color: "#828688", cursor: "pointer", fontSize: "45px"}} />
+            </IconButton>
+        )
     }
-    return <Button onClick={props.toggleOnline}>Go Online!</Button>;
+    return (
+        <IconButton onClick={props.toggleOnline} size="large">
+            <Hearing style={{color: "#87b153", cursor: "pointer", fontSize: "45px"}} />
+        </IconButton>
+    )
 };
 
 ToggleOnlineButton.propTypes = {

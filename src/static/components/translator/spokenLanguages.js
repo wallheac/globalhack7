@@ -1,6 +1,8 @@
 import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
+import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Chip from "@material-ui/core/Chip";
 import Grid from "@material-ui/core/Grid";
@@ -54,7 +56,7 @@ class SpokenLanguages extends Component {
         const languages = Languages.filter(language => !this.state.selectedLanguages.includes(language.language));
         const hasLanguages = languages && Array.isArray(languages) && languages.length > 0;
         return (
-            <Grid item container direction="column">
+            <Grid item container direction="column" style={{margin:"10px"}}>
                 <Grid item>
                     <TextField
                         fullWidth
@@ -97,8 +99,15 @@ class SpokenLanguages extends Component {
                             })
                     }
                 </Grid>
-                <Grid item>
-                    <ToggleOnlineButton online={this.props.online} toggleOnline={this.onToggleOnline} />
+                <Grid item container justify="center" alignItems="center">
+                    <Grid item style={{paddingRight:"100px"}}>
+                        <IconButton onClick={this.props.lastStep} size="large">
+                            <KeyboardArrowLeft style={{cursor: "pointer", fontSize: "45px"}} />
+                        </IconButton>
+                    </Grid>
+                    <Grid item>
+                        <ToggleOnlineButton online={this.props.online} toggleOnline={this.onToggleOnline} />
+                    </Grid>
                 </Grid>
             </Grid>
         );
@@ -107,7 +116,8 @@ class SpokenLanguages extends Component {
 
 SpokenLanguages.propTypes = {
     handleToggleOnline: PropTypes.func.isRequired,
-    online: PropTypes.bool.isRequired
+    online: PropTypes.bool.isRequired,
+    lastStep: PropTypes.func
 };
 
 export default SpokenLanguages;

@@ -1,15 +1,19 @@
 import React, {Component} from "react";
 import propTypes from "prop-types";
+import PhoneForwarded from "@material-ui/icons/PhoneForwarded";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import languages from "../../test/languagesInNative";
 import callInformation from "../translateText/callInformation";
 export default class CallInformation extends Component {
     static propTypes = {
         chosenLanguage: propTypes.string.isRequired,
-        sendCallInformation: propTypes.func
+        sendCallInformation: propTypes.func,
+        lastStep: propTypes.func
     }
     constructor(props) {
         super(props);
@@ -73,7 +77,7 @@ export default class CallInformation extends Component {
 
     render() {
         return (
-            <Grid container direction="column">
+            <Grid container direction="column" spacing={40}>
                 <Grid item>
                     <TextField
                         fullWidth
@@ -119,8 +123,17 @@ export default class CallInformation extends Component {
                         )}
                     </TextField>
                 </Grid>
-                <Grid item>
-                    <Button onClick={this.submitForm} color="primary" size="large" variant="contained">Submit</Button>
+                <Grid item container justify="center" alignItems="center">
+                    <Grid item style={{paddingRight:"100px"}}>
+                        <IconButton onClick={this.props.lastStep} size="large">
+                            <KeyboardArrowLeft style={{cursor: "pointer", fontSize: "45px"}} />
+                        </IconButton>
+                    </Grid>
+                    <Grid item>
+                        <IconButton onClick={this.submitForm} size="large">
+                            <PhoneForwarded style={{color: "#87b153", cursor: "pointer", fontSize: "45px"}} />
+                        </IconButton>
+                    </Grid>
                 </Grid>
             </Grid>
         )
