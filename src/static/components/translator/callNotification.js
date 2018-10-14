@@ -1,44 +1,60 @@
-import React, {PureComponent} from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
+import {Dialog, DialogTitle, IconButton, Typography, Grid} from "@material-ui/core";
 import {CheckCircle, Cancel} from '@material-ui/icons';
-import {List, ListItem, ListItemText, Button, Dialog, DialogTitle, IconButton, Typography, Grid} from "@material-ui/core";
 
-class CallNotification extends PureComponent {
+class CallNotification extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            acceptCall: null
+        }
+    }
+
+    handleAccept() {
+        //TODO
+    }
+
+    handleDecline() {
+        //TODO
+    }
+
     render() {
         return(
-            <Dialog open={this.props.show}>
-                <DialogTitle>Accept Call</DialogTitle>
-                <List>
-                    <ListItem>
-                        <Button onClick={this.props.onAcceptCall}>
-                            <CheckCircle/>
-                        </Button>
-                        <ListItemText>
+            <Dialog open={true}>
+            <DialogTitle>Accept Call</DialogTitle>
+                <Grid container direction="column" alignItems="center">
+                    <Grid item>
+                        <Typography>
                             Accept
-                        </ListItemText>
-                    </ListItem>
-                    <ListItem>
-                        <Button onClick={this.props.onDeclineCall}>
-                            <Cancel />
-                        </Button>
-                        <ListItemText>
+                        </Typography>
+                        <IconButton onClick={this.handleAccept}>
+                            <CheckCircle/>
+                        </IconButton>
+                    </Grid>
+                    <Grid item>
+                        <Typography>
                             Decline
-                        </ListItemText>
-                    </ListItem>
-                </List>
-            </Dialog>
+                        </Typography>
+                        <IconButton onClick={this.handleDecline}>
+                            <Cancel />
+                        </IconButton>
+                    </Grid>
+                </Grid>
+                </Dialog>
         );
     };
 }
 
 CallNotification.propTypes = {
-    show: PropTypes.bool,
-    onAcceptCall: PropTypes.func.isRequired,
-    onDeclineCall: PropTypes.func.isRequired
+    openCallNotification: PropTypes.bool,
 };
 
 CallNotification.defaultProps = {
-    show: false
+    openCallNotification: false
 };
 
 export default CallNotification;
+
+
+
