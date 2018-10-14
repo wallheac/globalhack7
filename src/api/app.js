@@ -8,15 +8,23 @@ import WebSocket from "ws";
 const sessions = new Map();
 const calls = [];
 const onlineTranslators = new Set();
+const admins = [];
 
 class Service {
     // @TODO these two methods need to be protected, so they can't be called from the client
     cleanUpSession(ws, session) {
         if(sessions.has(ws)) sessions.delete(ws);
+        if(admins.has(ws)) admins.delete(ws);
         if(onlineTranslators.has(session)) onlineTranslators.delete(session);
     }
     send(ws, topic, content) {
         ws.send(JSON.stringify({topic, content}));
+    }
+    sendAdminCalls() {
+        const callRequests = calls.filter(call => call.callRequest);
+        admins.forEach(adminWs => {
+            this.send(ws, "state.calls", callRequests);
+        });
     }
     test(ws, session, content) {
         console.log("got test request", content);
@@ -99,6 +107,7 @@ class Service {
             this.send(translator.ws, "state.callInformation", translator.callInformation.callRequest);
         }
         this.send(ws, "state.callRequests", session.callRequests);
+        this.sendAdminCalls();
     }
     acceptCall(ws, session, content) {
         if(session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
@@ -108,6 +117,7 @@ class Service {
         session.callInformation.callRequest.status = "CONNECTED";
         this.send(ws, "state.callInformation", session.callInformation.callRequest);
         this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
+        this.sendAdminCalls();
     }
     completeCall(ws, session, content) {
         if(session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
@@ -119,6 +129,7 @@ class Service {
 
         this.send(ws, "state.callInformation", session.callInformation.callRequest);
         this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
+        this.sendAdminCalls();
 
     }
 };
