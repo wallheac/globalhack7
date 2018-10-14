@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from '@material-ui/core/styles';
+import Model from "../../model/app";
 
 const styles = theme => ({
     root: {
@@ -25,37 +26,23 @@ class SoundBoard extends Component {
         }
     }
 
-    sendAddress () {
-        //TODO
-    }
-
-    sendPassport() {
-        //TODO
-    }
-
-    sendAlienNumber() {
-        //TODO
-    }
+    sendItem = field => () => Model.sendPrivate(field);
 
     render() {
         console.log("userInfo", this.props.userInformation)
+        const fields = {
+            name: "Name",
+            address: "Address",
+            alienNumber: "Alien #",
+            passportNumber: "Passport #"
+        };
         return (
             <Fragment>
-                <Grid>
-                    {this.props.userInformation && this.props.userInformation.address &&
-                        <Grid item>
-                            <Button onClick={this.sendAddress}>Address</Button>
-                        </Grid>
-                    }
-                    {this.props.userInformation && this.props.userInformation.passportNumber &&
-                        <Grid item>
-                            <Button onClick={this.sendPassport}>Passport #</Button>
-                        </Grid>
-                    }
-                    {this.props.userInformation && this.props.userInformation.alienNumber &&
-                        <Grid item>
-                            <Button onClick={this.sendAlienNumber}>Alien #</Button>
-                        </Grid>
+                <Grid item container spacing={24}>
+                    {
+                        this.props.userInformation && this.props.userInformation.map(info => <Grid key={info} item>
+                                <Button variant="contained" color="secondary" onClick={this.sendItem(info)}>{fields[info]}</Button>
+                            </Grid>)
                     }
                 </Grid>
             </Fragment>
@@ -63,7 +50,7 @@ class SoundBoard extends Component {
     };
 }
 SoundBoard.propTypes = {
-    userInformation: PropTypes.object
+    userInformation: PropTypes.array
 };
 
 SoundBoard.defaultProps = {

@@ -52,7 +52,7 @@ TranslationDisplay.propTypes = {
     name: PropTypes.string,
     phoneNumber: PropTypes.string,
     textToTranslate: PropTypes.string,
-    userInformation: PropTypes.object
+    userInformation: PropTypes.array
 };
 
 TranslationDisplay.defaultProps = {
