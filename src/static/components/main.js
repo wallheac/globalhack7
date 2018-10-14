@@ -140,7 +140,7 @@ class Main extends Component {
                             "user_information": () => <UserInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendUserInformation={this.sendUserInformation} />,
                             "user_callInformation": () => <CallInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendCallInformation={this.sendCallInformation} />,
                             "user_next": () => <div>done??? (user)</div>,
-                            "user_connected": () => <ConnectionConfirmation status={this.state.callRequests.find(req => req.id === this.state.requestId)} />
+                            "user_connected": () => <ConnectionConfirmation status={this.state.callRequests.find(req => req.callId === this.state.requestId)} />
                         }[this.state.step]()
                     }
             </Grid>

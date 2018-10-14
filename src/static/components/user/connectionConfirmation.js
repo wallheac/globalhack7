@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Grid, Dialog, DialogTitle, CircularProgress} from "@material-ui/core";
+import {Grid, Dialog, DialogTitle, CircularProgress, Typography, Button} from "@material-ui/core";
 import {withStyles} from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -21,7 +21,7 @@ class ConnectionConfirmation extends Component {
             <Dialog open>
                 <Grid container alignItems="center" justify="center">
                     {
-                        this.props.status === "CONNECTED" ?
+                        this.props.status && this.props.status.status === "CONNECTED" ?
                             <div>
                                 <DialogTitle>You are now connected with your voice!</DialogTitle>
                                 <Avatar
@@ -30,9 +30,21 @@ class ConnectionConfirmation extends Component {
                                     className={`${this.props.classes.icon}, ${this.props.classes.bigIcon}`}
                                 />
                             </div> :
-                            <Grid container alignItems="center" justify="center">
-                                <CircularProgress/>
-                            </Grid>
+                            this.props.status && this.props.status.status === "COMPLETE" ?
+                            <Grid item>
+                        <div>
+                            <Typography>Your voice has been heard</Typography>
+                            <Button size="large" variant="contained">Notes</Button>
+                            <Button size="large" variant="contained">Start Over</Button>
+                            <Button size="large" variant="contained">Exit</Button>
+                        </div> :
+                        <div>
+                            <Typography>Your voice is being transmitted</Typography>
+                        </div>
+                        </Grid> :
+                                <Grid container alignItems="center" justify="center">
+                                    <CircularProgress/>
+                                </Grid>
                     }
                 </Grid>
                 {/*@Todo connect translatorName props*/}
