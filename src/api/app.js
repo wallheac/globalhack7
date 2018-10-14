@@ -106,6 +106,7 @@ class Service {
         } catch (err) {
             console.log("error generating private files", err);
         }
+        content.privateFields = Object.keys(session.userInformation);
 
         if(!Array.isArray(session.callRequests)) session.callRequests = [];
         session.callRequests.push(content);
