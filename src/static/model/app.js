@@ -52,5 +52,8 @@ class Model extends EventEmitter {
     acceptCall() {
         return this.send("api.acceptCall");
     }
+    completeCall() {
+        return this.send("api.completeCall");
+    }
 }
 export default new Model();

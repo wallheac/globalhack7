@@ -109,6 +109,18 @@ class Service {
         this.send(ws, "state.callInformation", session.callInformation.callRequest);
         this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
     }
+    completeCall(ws, session, content) {
+        if(session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
+        if(!session.callInformation) return console.error("no call assigned to be accepted");
+        if(session.callInformation.callRequest.status !== "CONNECTED") return console.error("call not in status to be completed");
+
+        session.callInformation.callRequest.status = "COMPLETE";
+        session.callInformation.callRequest.result = content;
+
+        this.send(ws, "state.callInformation", session.callInformation.callRequest);
+        this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
+
+    }
 };
 const service = new Service();
 const app = express();
