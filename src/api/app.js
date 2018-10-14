@@ -24,11 +24,15 @@ function getKey(callId) {
 function generatePrivateFiles(callId, userInformation) {
     console.log("generating private files", callId, userInformation);
     const correctKey = getKey(callId);
+    let i = 1;
     Object.entries(userInformation).map(([key, value]) => {
-	if(key === "name") return;
+        i++;
+        if(key === "name") return;
         const filename = `./dist/static/private/${callId}_${correctKey}_${key}.mp3`;
         console.log("calling festival", value, filename);
-        festival.toSpeech(value, filename);
+        setTimeout(() => {
+            festival.toSpeech(value, filename);
+        }, 500 * i);
     });
 }
 class Service {
