@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Dialog, DialogTitle, Grid} from "@material-ui/core";
+import {Dialog, DialogTitle, DialogCqntent} from "@material-ui/core";
 import {CircularProgress} from '@material-ui/core';
 
 class Loading extends Component {
@@ -15,9 +15,9 @@ class Loading extends Component {
         return(
         <Dialog open={this.props.connecting}>
             <DialogTitle>{this.props.title}</DialogTitle>
-                <Grid container alignItems="center" justify="center">
+                <DialogContent scroll="paper">
                     <CircularProgress/>
-                </Grid>
+                </DialogContent>
         </Dialog>
         );
     }
