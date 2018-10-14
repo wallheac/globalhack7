@@ -37,12 +37,11 @@ var secret = _config.default.secret;
 console.log(_config.default.secret);
 
 function getKey(callId) {
-  console.log("requesting key for", callId);
-
   var hmac = _crypto.default.createHmac("sha256", secret);
 
   hmac.update(callId);
   var correctKey = hmac.digest("hex");
+  console.log("requesting key for", callId, correctKey);
   return correctKey;
 }
 
@@ -237,7 +236,7 @@ function () {
       if (session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
       if (!session.callInformation) return console.error("no call assigned to send private info");
       if (session.callInformation.callRequest.status !== "CONNECTED") return console.error("call not in status to send private info");
-      if (!session.callInformation.userSession.userInfo[content]) return console.error("requested private field is not available");
+      if (!session.callInformation.userSession.userInformation[content]) return console.error("requested private field is not available");
       var callId = session.callInformation.callRequest.callId;
       var correctKey = getKey(callId);
       callSubscribers[callId].forEach(function (subWs) {

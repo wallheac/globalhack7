@@ -15,10 +15,10 @@ const callSubscribers = [];
 const secret = config.secret;
 console.log(config.secret);
 function getKey(callId) {
-    console.log("requesting key for", callId);
     const hmac = crypto.createHmac("sha256", secret);
     hmac.update(callId);
     const correctKey = hmac.digest("hex");
+    console.log("requesting key for", callId, correctKey);
     return correctKey;
 }
 function generatePrivateFiles(callId, userInformation) {
@@ -161,7 +161,7 @@ class Service {
         if(session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
         if(!session.callInformation) return console.error("no call assigned to send private info");
         if(session.callInformation.callRequest.status !== "CONNECTED") return console.error("call not in status to send private info");
-        if(!session.callInformation.userSession.userInfo[content]) return console.error("requested private field is not available");
+        if(!session.callInformation.userSession.userInformation[content]) return console.error("requested private field is not available");
 
         const callId = session.callInformation.callRequest.callId;
         const correctKey = getKey(callId);
