@@ -216,7 +216,7 @@ function () {
       if (session.callInformation.callRequest.status !== "AWAITING_RESPONSE") return console.error("call not in status to be accepted");
       session.callInformation.callRequest.status = "CONNECTED";
       this.send(ws, "state.callInformation", session.callInformation.callRequest);
-      this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests); //this.sendAdminCalls();
+      this.send(session.callInformation.userSession.ws, "state.callRequests", session.callInformation.userSession.callRequests); //this.sendAdminCalls();
     }
   }, {
     key: "completeCall",
@@ -227,7 +227,7 @@ function () {
       session.callInformation.callRequest.status = "COMPLETE";
       session.callInformation.callRequest.result = content;
       this.send(ws, "state.callInformation", session.callInformation.callRequest);
-      this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests); //this.sendAdminCalls();
+      this.send(session.callInformation.userSession.ws, "state.callRequests", session.callInformation.userSession.callRequests); //this.sendAdminCalls();
     }
   }, {
     key: "sendPrivate",
