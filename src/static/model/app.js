@@ -54,8 +54,8 @@ class Model extends EventEmitter {
     acceptCall() {
         return this.send("api.acceptCall");
     }
-    completeCall() {
-        return this.send("api.completeCall");
+    completeCall(notes) {
+        return this.send("api.completeCall", notes);
     }
     adminSubscribe() {
         return this.send("api.adminSubscribe");

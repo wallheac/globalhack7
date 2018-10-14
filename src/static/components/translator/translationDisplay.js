@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
-import {IconButton, Grid, Button} from "@material-ui/core";
-import {Call} from '@material-ui/icons';
+import {IconButton, Grid, Button, TextField} from "@material-ui/core";
+import {Call, CallEnd} from '@material-ui/icons';
 import SoundBoard from './soundBoard';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,18 +11,11 @@ class TranslationDisplay extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            connecting: false
+            notes: null
         }
     }
 
-    handleMakeCall = () => {
-        //TODO
-        this.setState({connecting: true});
-    }
-
-    handleCallConnected = () => {
-        this.setState({connecting:false})
-    }
+    onNoteChange = event => this.setState({notes: event.target.value});
 
     render() {
         return(
@@ -40,9 +33,24 @@ class TranslationDisplay extends Component {
                     </ListItem>
                   </List>
                 </Grid>
-                <Button onClick={this.props.endCall}>End Call</Button>
+                <Grid item>
+                    <TextField
+                        fullWidth
+                        value={this.state.notes || ""}
+                        label="Notes from call"
+                        onChange={this.onNoteChange}
+                        multiline
+                        rows="4"
+                        style={{marginBottom: "20px"}}
+                    />
+                </Grid>
                 <Grid container direction="column" alignItems="flex-end">
                     <SoundBoard userInformation={this.props.userInformation} />
+                </Grid>
+                <Grid item container justify="center">
+                    <IconButton onClick={this.props.endCall(this.state.notes)} size="large">
+                        <CallEnd color="secondary" style={{cursor: "pointer", fontSize: "100px"}} />
+                    </IconButton>
                 </Grid>
             </Fragment>
         );

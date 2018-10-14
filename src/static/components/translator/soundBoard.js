@@ -31,7 +31,6 @@ class SoundBoard extends Component {
     render() {
         console.log("userInfo", this.props.userInformation)
         const fields = {
-            name: "Name",
             address: "Address",
             alienNumber: "Alien #",
             passportNumber: "Passport #"

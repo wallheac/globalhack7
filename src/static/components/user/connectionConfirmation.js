@@ -15,8 +15,12 @@ const styles = {
 };
 
 class ConnectionConfirmation extends Component {
+    state = {
+        showNotes: false
+    }
+    showNotes = () => this.setState(prevState => ({showNotes: !prevState.showNotes}));
     render() {
-        console.log("# this.props.status: ", this.props.status);
+        console.log("# this.state.showNotes: ", this.state.showNotes);
         return(
             <Dialog open>
                 <Grid container alignItems="center" justify="center">
@@ -30,21 +34,21 @@ class ConnectionConfirmation extends Component {
                                     className={`${this.props.classes.icon}, ${this.props.classes.bigIcon}`}
                                 />
                             </div> :
-                            this.props.status && this.props.status.status === "COMPLETE" ?
-                            <Grid item>
-                        <div>
-                            <Typography>Your voice has been heard</Typography>
-                            <Button size="large" variant="contained">Notes</Button>
-                            <Button size="large" variant="contained">Start Over</Button>
-                            <Button size="large" variant="contained">Exit</Button>
-                        </div> :
-                        <div>
-                            <Typography>Your voice is being transmitted</Typography>
-                        </div>
-                        </Grid> :
-                                <Grid container alignItems="center" justify="center">
-                                    <CircularProgress/>
-                                </Grid>
+                                this.props.status && this.props.status.status === "COMPLETE" ?
+                                    <Grid item container spacing={32}>
+                                        <div>
+                                            <Typography>Your voice has been heard</Typography>
+                                            <Button style={{margin: 6}} onClick={this.showNotes} size="large" variant="contained">Notes</Button>
+                                            <Button style={{margin: 6}} size="large" variant="contained">Start Over</Button>
+                                            <Button style={{margin: 6}} size="large" variant="contained">Exit</Button>
+                                            {
+                                                this.state.showNotes && <Typography>{this.props.status.result}</Typography>
+                                            }
+                                        </div>
+                                    </Grid> :
+                                        <Grid container alignItems="center" justify="center">
+                                            <CircularProgress/>
+                                        </Grid>
                     }
                 </Grid>
                 {/*@Todo connect translatorName props*/}

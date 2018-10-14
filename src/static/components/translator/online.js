@@ -34,7 +34,7 @@ class Online extends PureComponent {
 
     onDeclineCall = () => this.setState({callInformation: null});
 
-    endCall = () => Model.completeCall();
+    endCall = notes => () => Model.completeCall(notes);
 
     render() {
         console.log("### this.state: ", this.state);
