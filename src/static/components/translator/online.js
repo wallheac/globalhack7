@@ -44,6 +44,7 @@ class Online extends PureComponent {
                             name={this.state.callInformation.callerName}
                             phoneNumber={this.state.callInformation.phoneNumber}
                             textToTranslate={this.state.callInformation.message}
+                            userInformation={this.props.userInformation}
                         /> :
                         <div>
                             <Typography>You Are Available!</Typography>
@@ -62,7 +63,11 @@ class Online extends PureComponent {
 
 Online.propTypes = {
     online: PropTypes.bool.isRequired,
-    toggleOnline: PropTypes.func.isRequired
+    toggleOnline: PropTypes.func.isRequired,
+    userInformation: PropTypes.object
+};
+Online.defaultProps = {
+    userInformation: {}
 };
 
 export default Online;

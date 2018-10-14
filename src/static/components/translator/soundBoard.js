@@ -38,20 +38,21 @@ class SoundBoard extends Component {
     }
 
     render() {
+        console.log("userInfo", this.props.userInformation)
         return (
             <Fragment>
                 <Grid>
-                    {this.props.address &&
+                    {this.props.userInformation && this.props.userInformation.address &&
                         <Grid item>
                             <Button onClick={this.sendAddress}>Address</Button>
                         </Grid>
                     }
-                    {this.props.passportNumber &&
+                    {this.props.userInformation && this.props.userInformation.passportNumber &&
                         <Grid item>
                             <Button onClick={this.sendPassport}>Passport #</Button>
                         </Grid>
                     }
-                    {this.props.alienNumber &&
+                    {this.props.userInformation && this.props.userInformation.alienNumber &&
                         <Grid item>
                             <Button onClick={this.sendAlienNumber}>Alien #</Button>
                         </Grid>
@@ -62,16 +63,11 @@ class SoundBoard extends Component {
     };
 }
 SoundBoard.propTypes = {
-    classes: PropTypes.object.isRequired,
-    address: PropTypes.string,
-    passportNumber: PropTypes.string,
-    alienNumber: PropTypes.string
+    userInformation: PropTypes.object
 };
 
 SoundBoard.defaultProps = {
-    address: null,
-    passportNumber: null,
-    alienNumber: null
+    userInformation: null
 };
 
 export default withStyles(styles)(SoundBoard);

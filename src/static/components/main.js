@@ -120,7 +120,7 @@ class Main extends Component {
                             "language": () => <SelectYourLanguage language={this.state.language} onSelectYourLanguage={this.onSelectYourLanguage} />,
                             "userType": () => <UserChooser onChooseUser={this.onChooseUser} lastStep={this.lastStep} />,
                             "translator_spokenLanguages": () => <SpokenLanguages handleToggleOnline={this.handleToggleOnline} lastStep={this.lastStep} online={this.state.onlineStatus} />,
-                            "translator_onlineStatus": () => <Online online={this.state.onlineStatus} toggleOnline={this.handleToggleOnline} />,
+                            "translator_onlineStatus": () => <Online online={this.state.onlineStatus} userInformation={this.state.userInformation} toggleOnline={this.handleToggleOnline} />,
                             "translator_next": () => <div>done???(translator)</div>,
                             "user_information": () => <UserInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendUserInformation={this.sendUserInformation} />,
                             "user_callInformation": () => <CallInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendCallInformation={this.sendCallInformation} />,
