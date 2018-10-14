@@ -12,8 +12,10 @@ import Paper from "@material-ui/core/Paper";
 import UserInformation from "./user/userInformation"
 import CallInformation from "./user/callInformation"
 import Online from "./translator/online";
+import ConnectionConfirmation from "./user/connectionConfirmation";
 
 import Model from "../model/app";
+
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -22,7 +24,9 @@ class Main extends Component {
             userType: null,
             userInformation: null,
             step: "language",
-            onlineStatus: false
+            onlineStatus: false,
+            callRequests: null,
+            resquestId: null
         };
     }
     getSteps() {
@@ -30,7 +34,7 @@ class Main extends Component {
             return ["language", "userType", "translator_spokenLanguages", "translator_onlineStatus", "translator_next"];
         }
         if(this.state.userType === UserTypes.USER) {
-            return ["language", "userType", "user_information", "user_callInformation", "user_next"];
+            return ["language", "userType", "user_information", "user_callInformation", "user_connected", "user_next"];
         }
         return ["language", "userType"];
     }
@@ -70,6 +74,12 @@ class Main extends Component {
                 if(this.state.step === "user_information") return this.nextStep();
             });
         });
+        Model.on("state.callRequests", callRequests => {
+            console.log("# this.state.step: ", this.state.step);
+            this.setState({callRequests}, () => {
+                if(this.state.step === "user_callInformation") return this.nextStep();
+            })
+        });
     }
 
     // Push changes to service
@@ -77,7 +87,10 @@ class Main extends Component {
     onChooseUser = userType => Model.setUserType(userType);
     handleToggleOnline = translatorInformation =>  Model.setOnlineStatus({onlineStatus: !this.state.onlineStatus, translatorInformation});
     sendUserInformation = userInformation => Model.setUserInformation(userInformation);
-    sendCallInformation = callInformation => Model.requestCall(callInformation);
+    sendCallInformation = callInformation => {
+        const id = Model.requestCall(callInformation);
+        this.setState({requestId: id});
+    }
 
     testTranslator() {
         this.onSelectYourLanguage("en");
@@ -113,6 +126,8 @@ class Main extends Component {
         });
     }
     render() {
+        console.log("### this.state.callRequests: ", this.state.callRequests);
+        console.log("### this.state.requestId: ", this.state.requestId);
         return (
             <Grid container alignContent="center" alignItems="center" justify="center" style={{height:"100%"}}>
                     {
@@ -125,6 +140,7 @@ class Main extends Component {
                             "user_information": () => <UserInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendUserInformation={this.sendUserInformation} />,
                             "user_callInformation": () => <CallInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendCallInformation={this.sendCallInformation} />,
                             "user_next": () => <div>done??? (user)</div>,
+                            "user_connected": () => <ConnectionConfirmation status={this.state.callRequests.find(req => req.id === this.state.requestId)} />
                         }[this.state.step]()
                     }
             </Grid>

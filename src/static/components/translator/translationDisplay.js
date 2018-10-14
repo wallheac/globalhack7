@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
-import {IconButton, Grid} from "@material-ui/core";
+import {IconButton, Grid, Button} from "@material-ui/core";
 import {Call} from '@material-ui/icons';
 import SoundBoard from './soundBoard';
 import List from '@material-ui/core/List';
@@ -40,6 +40,7 @@ class TranslationDisplay extends Component {
                     </ListItem>
                   </List>
                 </Grid>
+                <Button onClick={this.props.endCall}>End Call</Button>
                 <Grid container direction="column" alignItems="flex-end">
                     <SoundBoard userInformation={this.props.userInformation} />
                 </Grid>
@@ -52,7 +53,8 @@ TranslationDisplay.propTypes = {
     name: PropTypes.string,
     phoneNumber: PropTypes.string,
     textToTranslate: PropTypes.string,
-    userInformation: PropTypes.array
+    userInformation: PropTypes.array,
+    endCall: PropTypes.func.isRequired
 };
 
 TranslationDisplay.defaultProps = {

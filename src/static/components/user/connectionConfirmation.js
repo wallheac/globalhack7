@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-import {Dialog, DialogTitle, Grid} from "@material-ui/core";
+import {Grid, Dialog, DialogTitle, CircularProgress} from "@material-ui/core";
 import {withStyles} from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -15,43 +15,39 @@ const styles = {
 };
 
 class ConnectionConfirmation extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            connected: false
-        }
-    }
-
     render() {
+        console.log("# this.props.status: ", this.props.status);
         return(
             <Dialog open>
-                <DialogTitle>You are now connected with</DialogTitle>
                 <Grid container alignItems="center" justify="center">
-                    <div>
-                        <Avatar
-
-                            alt="Jane Doe"
-                            src="./images/female1-512.png"
-                            className={`${this.props.classes.icon}, ${this.props.classes.bigIcon}`}
-                        />
-                    </div>
+                    {
+                        this.props.status === "CONNECTED" ?
+                            <div>
+                                <DialogTitle>You are now connected with your voice!</DialogTitle>
+                                <Avatar
+                                    alt="Jane Doe"
+                                    src="./images/female1-512.png"
+                                    className={`${this.props.classes.icon}, ${this.props.classes.bigIcon}`}
+                                />
+                            </div> :
+                            <Grid container alignItems="center" justify="center">
+                                <CircularProgress/>
+                            </Grid>
+                    }
                 </Grid>
                 {/*@Todo connect translatorName props*/}
-                <DialogTitle>Jane Doe</DialogTitle>
             </Dialog>
         );
     }
 }
 
 ConnectionConfirmation.propTypes = {
-    connecting: PropTypes.bool,
-    title: PropTypes.string,
+    status: PropTypes.bool,
     classes: PropTypes.object.isRequired
 };
 
 ConnectionConfirmation.defaultProps = {
-    connecting: false,
-    title: ""
+    status: false,
 };
 
 export default withStyles(styles)(ConnectionConfirmation);

@@ -34,6 +34,8 @@ class Online extends PureComponent {
 
     onDeclineCall = () => this.setState({callInformation: null});
 
+    endCall = () => Model.completeCall();
+
     render() {
         console.log("### this.state: ", this.state);
         return (
@@ -41,6 +43,7 @@ class Online extends PureComponent {
                 {
                     this.state.callInformation && this.state.callInformation.status === "CONNECTED" ?
                         <TranslationDisplay
+                            endCall={this.endCall}
                             name={this.state.callInformation.callerName}
                             phoneNumber={this.state.callInformation.phoneNumber}
                             textToTranslate={this.state.callInformation.message}
