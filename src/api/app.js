@@ -6,13 +6,14 @@ import url from "url";
 import WebSocket from "ws";
 import crypto from "crypto";
 import festival from "festival";
-
+import config from "../../config.js";
 const sessions = new Map();
 const calls = [];
 const onlineTranslators = new Set();
 //const admins = new Set();
 const callSubscribers = [];
-const secret = "fJei3KSclfp1X";
+const secret = config.secret;
+console.log(config.secret);
 function getKey(callId) {
     console.log("requesting key for", callId);
     const hmac = crypto.createHmac("sha256", secret);
@@ -24,7 +25,8 @@ function generatePrivateFiles(callId, userInformation) {
     console.log("generating private files", callId, userInformation);
     const correctKey = getKey(callId);
     Object.entries(userInformation).map(([key, value]) => {
-        const filename = `/home/jamon/ghack/webapp-template/dist/static/private/${callId}_${correctKey}_${key}.mp3`;
+	if(key === "name") return;
+        const filename = `../../dist/static/private/${callId}_${correctKey}_${key}.mp3`;
         console.log("calling festival", value, filename);
         festival.toSpeech(value, filename);
     });
@@ -225,5 +227,5 @@ server.on("upgrade", (req, socket, head) => {
         });
     }
 });
-const port = process.env.port || 9080;
-server.listen(port, () => console.log(`Listening on port ${port}!`));
+const port = process.env.port || 8443;
+server.listen(port, "0.0.0.0", () => console.log(`Listening on port ${port}!`));

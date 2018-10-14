@@ -1,5 +1,9 @@
 const crypto = require("crypto");
-const hmac = crypto.createHmac('sha256', 'fJei3KSclfp1X');
+const config = require("./config.js");
+const hmac = crypto.createHmac('sha256', config.secret);
+console.log(config.secret);
 const callId = process.argv[2];
 hmac.update(callId);
-console.log(callId, hmac.digest('hex'));
+const digest = hmac.digest('hex');
+console.log(`https://www.a1ive.org/static/room/?callId=${callId}&key=${digest}`);
+
