@@ -12,7 +12,6 @@ import Paper from "@material-ui/core/Paper";
 import UserInformation from "./user/userInformation"
 import CallInformation from "./user/callInformation"
 import Online from "./translator/online";
-import CallRoom from "./call/room";
 
 import Model from "../model/app";
 class Main extends Component {
@@ -128,7 +127,6 @@ class Main extends Component {
                             "user_next": () => <div>done??? (user)</div>,
                         }[this.state.step]()
                     }
-                    <CallRoom />
             </Grid>
         );
     }

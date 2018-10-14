@@ -5,6 +5,7 @@ import ToggleOnlineButton from "./toggleOnlineButton";
 import Grid from "@material-ui/core/Grid";
 import CallNotification from "./callNotification";
 import Model from "../../model/app";
+import TranslationDisplay from "./translationDisplay";
 
 class Online extends PureComponent {
     constructor(props) {
@@ -13,6 +14,8 @@ class Online extends PureComponent {
             callInformation: null
         }
     }
+
+    // this.state.callInformation.callId
 
     componentDidMount() {
         Model.on("state.callInformation", callInformation => {
@@ -24,15 +27,29 @@ class Online extends PureComponent {
         return Boolean(this.state.callInformation && this.state.callInformation.status === "AWAITING_RESPONSE");
     }
 
-    onAcceptCall = () => Model.acceptCall();
+    onAcceptCall = () => {
+        window.open(`/static/room/#${this.state.callInformation.callId}`);
+        Model.acceptCall();
+    }
 
     onDeclineCall = () => this.setState({callInformation: null});
 
     render() {
+        console.log("### this.state.callInformation: ", this.state.callInformation)
         return (
             <Grid item>
-                <Typography>You Are Available!</Typography>
-                <ToggleOnlineButton online={this.props.online} toggleOnline={this.props.toggleOnline} />
+                {
+                    this.state.callInformation && this.state.callInformation.status === "CONNECTED" ?
+                        <TranslationDisplay
+                            name={this.state.callInformation.callerName}
+                            phoneNumber={this.state.callInformation.phoneNumber}
+                            textToTranslate={this.state.callInformation.message}
+                        /> :
+                        <div>
+                            <Typography>You Are Available!</Typography>
+                            <ToggleOnlineButton online={this.props.online} toggleOnline={this.props.toggleOnline} />
+                        </div>
+                }
                 <CallNotification
                     show={this.shouldShowModal()}
                     onAcceptCall={this.onAcceptCall}
