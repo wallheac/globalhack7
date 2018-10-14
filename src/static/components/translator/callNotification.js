@@ -13,7 +13,7 @@ class CallNotification extends Component {
                         <Typography>
                             Accept
                         </Typography>
-                        <IconButton onClick={this.handleAccept}>
+                        <IconButton onClick={this.props.onAcceptCall}>
                             <CheckCircle/>
                         </IconButton>
                     </Grid>
@@ -21,7 +21,7 @@ class CallNotification extends Component {
                         <Typography>
                             Decline
                         </Typography>
-                        <IconButton onClick={this.handleDecline}>
+                        <IconButton onClick={this.props.onDeclineCall}>
                             <Cancel />
                         </IconButton>
                     </Grid>
@@ -33,6 +33,8 @@ class CallNotification extends Component {
 
 CallNotification.propTypes = {
     show: PropTypes.bool,
+    onAcceptCall: PropTypes.func,
+    onDeclineCall: PropTypes.func
 };
 
 CallNotification.defaultProps = {

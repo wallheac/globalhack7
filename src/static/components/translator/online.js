@@ -24,11 +24,9 @@ class Online extends PureComponent {
         return Boolean(this.state.callInformation && this.state.callInformation.status === "AWAITING_RESPONSE");
     }
 
-    onAcceptCall = () => {
-        Model.acceptCall();
-    }
+    onAcceptCall = () => Model.acceptCall();
 
-    onDeclineCall = () => this.setState({incomingCall: false});
+    onDeclineCall = () => this.setState({callInformation: null});
 
     render() {
         return (

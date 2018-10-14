@@ -13,7 +13,7 @@ class SelectYourLanguage extends PureComponent {
         return (
             <Grid container direction="column" style={{backgroundColor:"#f8d959", height: "100%"}}>
                 <Grid item container alignContent="center" justify="center">
-                    <Mic style={{fontSize: "200px", color: "white"}} />
+                    <Mic style={{fontSize: "200px", color: "white", marginTop: 40}} />
                 </Grid>
                 <Grid item>
                     <TextField
