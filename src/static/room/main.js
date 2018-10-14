@@ -5,7 +5,6 @@ class Main extends Component {
     constructor(props) {
         super(props);
         const roomId = location.hash.substring(1);
-        console.log(roomId);
         this.drone = new ScaleDrone("pc4Iz2ZtevnIoWfg");
         this.roomName = "observable-" + roomId;
         this.configuration = {
@@ -23,7 +22,6 @@ class Main extends Component {
                 return console.error(error);
             }
             this.room = this.drone.subscribe(this.roomName);
-            console.log(this.room);
             this.room.on("open", error => {
                 if(error) {
                     console.error(error);                           
@@ -70,8 +68,7 @@ class Main extends Component {
                 remote.srcObject = stream;
             }
         };
-    
-        console.log("Before local")
+
         navigator.mediaDevices.getUserMedia({audio: true, video: true})
             .then(stream => {
                 // Display your local video in #localVideo element
