@@ -92,10 +92,11 @@ class Service {
         console.log("available translators that match: ", availableTranslators);
         if(availableTranslators.length > 0) {
             const translator = availableTranslators[0]; // @TODO add algorithm to select translator
+            console.log("matched to translator", translator);
             content.status = "AWAITING_RESPONSE";
             translator.callInformation = {userSession: session, callRequest: content};
             // @TODO clean up this object before sending it to the translator
-            this.send(translator, "state.callInformation", translator.callInformation.callRequest);
+            this.send(translator.ws, "state.callInformation", translator.callInformation.callRequest);
         }
         this.send(ws, "state.callRequests", session.callRequests);
     }
@@ -133,6 +134,7 @@ wss.on("connection", (ws, req) => {
                     return;
                 }
                 const sess = sessions.get(ws);
+                sess.ws = ws;
                 (service[method])(ws, sess, body.content);
             } else {
                 console.log("unknown message type", message);

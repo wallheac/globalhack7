@@ -77,6 +77,39 @@ class Main extends Component {
     goBackAStep = () => this.setState(prevState => ({step: prevState.step - 1}));
 
 
+    testTranslator() {
+        this.onSelectYourLanguage("en");
+        Model.once("state.language", () => {
+            this.onChooseUser("TRANSLATOR");
+        });
+        Model.once("state.userType", () => {
+            this.handleToggleOnline({name: "Francois", selectedLanguages: ["en", "fr"]});
+        });
+    }
+
+    testUser() {
+        this.onSelectYourLanguage("fr");
+        Model.once("state.language", () => {
+            this.onChooseUser("USER");
+        });
+        Model.once("state.userType", () => {
+            this.sendUserInformation({
+                "name": "Jacques",
+                "address":"123 S Main St",
+                "alienNumber": "9444222123",
+                "passportNumber":"123"
+            });
+        });
+        Model.once("state.userInformation", () => {
+            this.sendCallInformation({
+                callId: Math.floor(Math.random()*100000),
+                callerName: 'Someone',
+                phoneNumber: '1231231233',
+                message: 'aslkdjflaskdf',
+                voiceLanguage: 'en'
+            });
+        });
+    }
     render() {
         return (
             <Grid>
