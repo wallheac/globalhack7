@@ -175,7 +175,7 @@ class Service {
         if(submittedKey !== correctKey) return console.error("attempt to subscribe without proper authorization");
 
         if(!callSubscribers[callId]) callSubscribers[callId] = [];
-        callSubscribers[content].push(ws);
+        callSubscribers[callId].push(ws);
     }
 };
 const service = new Service();
