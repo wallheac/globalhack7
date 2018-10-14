@@ -43,6 +43,7 @@ module.exports = function(env) {
             extensions: [".js", ".json"]
         },
         devServer: {
+            // host: "0.0.0.0", // Enable it if you want your server to be accessible externally
             https: true,
             contentBase: path.join(__dirname, "dist", "static"),
             index: "index.html",
