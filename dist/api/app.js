@@ -48,16 +48,19 @@ function getKey(callId) {
 function generatePrivateFiles(callId, userInformation) {
   console.log("generating private files", callId, userInformation);
   var correctKey = getKey(callId);
+  var i = 1;
   Object.entries(userInformation).map(function (_ref) {
     var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
         key = _ref2[0],
         value = _ref2[1];
 
+    i++;
     if (key === "name") return;
     var filename = "./dist/static/private/".concat(callId, "_").concat(correctKey, "_").concat(key, ".mp3");
     console.log("calling festival", value, filename);
-
-    _festival.default.toSpeech(value, filename);
+    setTimeout(function () {
+      _festival.default.toSpeech(value, filename);
+    }, 500 * i);
   });
 }
 
