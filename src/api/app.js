@@ -8,24 +8,25 @@ import WebSocket from "ws";
 const sessions = new Map();
 const calls = [];
 const onlineTranslators = new Set();
-const admins = [];
+//const admins = new Set();
+const callSubscribers = [];
 
 class Service {
     // @TODO these two methods need to be protected, so they can't be called from the client
     cleanUpSession(ws, session) {
         if(sessions.has(ws)) sessions.delete(ws);
-        if(admins.has(ws)) admins.delete(ws);
+        //if(admins.has(ws)) admins.delete(ws);
         if(onlineTranslators.has(session)) onlineTranslators.delete(session);
     }
     send(ws, topic, content) {
         ws.send(JSON.stringify({topic, content}));
     }
-    sendAdminCalls() {
+    /*sendAdminCalls() {
         const callRequests = calls.filter(call => call.callRequest);
         admins.forEach(adminWs => {
             this.send(ws, "state.calls", callRequests);
         });
-    }
+    }*/
     test(ws, session, content) {
         console.log("got test request", content);
         this.send(ws, "state.test", {message: "hello"});
@@ -107,7 +108,7 @@ class Service {
             this.send(translator.ws, "state.callInformation", translator.callInformation.callRequest);
         }
         this.send(ws, "state.callRequests", session.callRequests);
-        this.sendAdminCalls();
+        //this.sendAdminCalls();
     }
     acceptCall(ws, session, content) {
         if(session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
@@ -117,11 +118,11 @@ class Service {
         session.callInformation.callRequest.status = "CONNECTED";
         this.send(ws, "state.callInformation", session.callInformation.callRequest);
         this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
-        this.sendAdminCalls();
+        //this.sendAdminCalls();
     }
     completeCall(ws, session, content) {
         if(session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
-        if(!session.callInformation) return console.error("no call assigned to be accepted");
+        if(!session.callInformation) return console.error("no call assigned to be completed");
         if(session.callInformation.callRequest.status !== "CONNECTED") return console.error("call not in status to be completed");
 
         session.callInformation.callRequest.status = "COMPLETE";
@@ -129,8 +130,21 @@ class Service {
 
         this.send(ws, "state.callInformation", session.callInformation.callRequest);
         this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
-        this.sendAdminCalls();
+        //this.sendAdminCalls();
 
+    }
+    sendPrivate(ws, session, content) {
+        if(session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
+        if(!session.callInformation) return console.error("no call assigned to send private info");
+        if(session.callInformation.callRequest.status !== "CONNECTED") return console.error("call not in status to send private info");
+
+        callSubscribers[session.callInformation.callRequest.callId].forEach(subWs => {
+            this.send(subWs, "playSound", "urlhere");
+        });
+    }
+    subscribeCall(ws, session, content) {
+        if(!callSubscribers[content]) callSubscribers[content] = [];
+        callSubscribers[content].push(ws);
     }
 };
 const service = new Service();
