@@ -5,6 +5,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <style>
+        body {
+            font-family: 'Roboto', 'Open Sans', 'Lucida Grande', sans-serif;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: #e1e1e1;
+        }
+        a {
+            color: #4285F4;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #3B78E7;
+            text-decoration: underline;
+        }
+        .wait {
+            background-color: rgba(0, 0, 0);
+            position: fixed;
+            top: 0;
+            left: 0;
+            font-size: 16px;
+            color: rgba(255, 255, 255);
+            padding: 10px;
+            width: 100%;
+        }
         .container {
             display: flex;
             height: 100vh;
@@ -12,7 +38,6 @@
             align-items: center;
             justify-content: center;
             padding: 0 50px;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         }
         video {
             background-color: black;

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
+import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 class Room extends Component {
@@ -19,12 +19,21 @@ class Room extends Component {
         window.open(`/static/room/#${this.state.number.toString(16)}`);
     }
 
+    handleChange = event => {
+        const {value} = event.target;
+        if(!value) {
+            this.setState({number: ""});
+        } else if(value.match(/^[0-9]{0,7}$/)) {
+            this.setState({number: parseInt(value)});
+        }
+    }
+
     render() {
         const {number} = this.state;
         return (
             <Grid>
-                <Input label="Room Number" value={this.state.number} required/>
-                <Button variant="contained" color="primary" onClick={this.generate}>Generate</Button>
+                <TextField label="Room Number" value={this.state.number} required onChange={this.handleChange}/>
+                <Button variant="contained" color="primary" onClick={this.generate}>Create Room</Button>
                 <Button variant="contained" color="primary" onClick={this.join} disabled={!number}>Join</Button>
             </Grid>
         );

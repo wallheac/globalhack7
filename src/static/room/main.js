@@ -4,6 +4,10 @@ import ReactDOM from "react-dom";
 class Main extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            localStream: false,
+            remoteStream: false
+        };
         const roomId = location.hash.substring(1);
         this.drone = new ScaleDrone("pc4Iz2ZtevnIoWfg");
         this.roomName = "observable-" + roomId;
@@ -60,18 +64,22 @@ class Main extends Component {
             }
         }
     
-        // When a remote stream arrives display it in the #remoteVideo element
+        // When a remote stream arrives display it in the remote video element
         this.pc.ontrack = event => {
             const stream = event.streams[0];
             const remote = ReactDOM.findDOMNode(this.refs.remote);
             if(!remote.srcObject || remote.srcObject.id !== stream.id) {
+                console.log("Set Remote Stream");
+                this.setState({remoteStream: true});
                 remote.srcObject = stream;
             }
         };
 
         navigator.mediaDevices.getUserMedia({audio: true, video: true})
             .then(stream => {
-                // Display your local video in #localVideo element
+                console.log("Set Local Stream");
+                this.setState({localStream: true});
+                // Display your local video in local video element
                 const local = ReactDOM.findDOMNode(this.refs.local);
                 local.srcObject = stream;
                 // Add your stream to be sent to the conneting peer
@@ -96,7 +104,7 @@ class Main extends Component {
             } else if(message.candidate) {
                 // Add the new ICE candidate to our connections remote description
                 this.pc.addIceCandidate(
-                    new RTCIceCandidate(message.candidate), null, error => console.log(error)
+                    new RTCIceCandidate(message.candidate), () => {}, error => console.log(error)
                 );
             }
         });
@@ -107,10 +115,18 @@ class Main extends Component {
     }
 
     render() {
+        const {localStream, remoteStream} = this.state;
         return (
-            <div className="container">
-                <video ref="local" autoPlay />
-                <video ref="remote" autoPlay />
+            <div>
+                {!remoteStream &&
+                    <div className="wait">
+                        Invite someone to join this room: <a href={location.href}>{location.href}</a>
+                    </div>
+                }
+                <div className="container">
+                    <video ref="local" autoPlay muted controls={localStream} />
+                    <video ref="remote" autoPlay />
+                </div>
             </div>
         );
     }
