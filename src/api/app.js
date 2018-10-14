@@ -170,7 +170,7 @@ class Service {
             this.send(subWs, "playSound", `/static/private/${callId}_${correctKey}_${content}.mp3`);
         });
     }
-    subscribeCall(ws, session, {callId, submittedKey}) {
+    subscribeCall(ws, session, {callId, key: submittedKey}) {
         const correctKey = getKey(callId);
         if(submittedKey !== correctKey) return console.error("attempt to subscribe without proper authorization");
 
