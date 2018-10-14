@@ -247,7 +247,7 @@ function () {
     key: "subscribeCall",
     value: function subscribeCall(ws, session, _ref4) {
       var callId = _ref4.callId,
-          submittedKey = _ref4.submittedKey;
+          submittedKey = _ref4.key;
       var correctKey = getKey(callId);
       if (submittedKey !== correctKey) return console.error("attempt to subscribe without proper authorization");
       if (!callSubscribers[callId]) callSubscribers[callId] = [];
