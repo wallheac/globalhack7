@@ -48,31 +48,7 @@ export default class CallInformation extends Component {
     };
 
     submitForm = () => {
-        Object.keys(this.state.validation).map(item => {
-            if (this.state.userInput[item] === null || this.state.userInput[item] === "") {
-                this.setState(prevState => {
-                    const validation = prevState.validation;
-                    validation[item] = true;
-                    return {validation};
-                }, () => {
-                    const error = Object.values(this.state.validation).some(e => e);
-                    if(!error) {
-                        this.props.sendCallInformation(this.state.userInput);
-                    }
-                });
-            } else {
-                this.setState(prevState => {
-                    const validation = prevState.validation;
-                    validation[item] = false;
-                    return {validation};
-                }, () => {
-                    const error = Object.values(this.state.validation).some(e => e);
-                    if(!error) {
-                        this.props.sendCallInformation(this.state.userInput);
-                    }
-                });
-            }
-        })
+        this.props.sendCallInformation(this.state.userInput);
     }
 
     render() {
