@@ -19,22 +19,47 @@
             padding: 10px;
             width: 100%;
         }
-        .container {
-            display: flex;
-            height: 100vh;
-            margin: 0;
-            align-items: start;
-            justify-content: space-around;
-            padding: 50px 0 0 0;
+        @media (min-width: 320px) and (max-width: 480px) {
+            .container {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                margin: 0;
+                align-items: center;
+                justify-content: space-around;
+                align-content: space-around;
+                padding: 0;
+            }
+            video {
+                display: flex;
+                background-color: black;
+                max-width: 70%;
+                max-height: 45%;
+                margin: 10px;
+                box-sizing: border-box;
+                border-radius: 2px;
+                padding: 0;
+                box-shadow: rgba(156, 172, 172, 0.2) 0px 2px 2px, rgba(156, 172, 172, 0.2) 0px 4px 4px, rgba(156, 172, 172, 0.2) 0px 8px 8px, rgba(156, 172, 172, 0.2) 0px 16px 16px, rgba(156, 172, 172, 0.2) 0px 32px 32px, rgba(156, 172, 172, 0.2) 0px 64px 64px;
+            }
         }
-        video {
-            background-color: black;
-            max-width: calc(50% - 100px);
-            margin: 0 50px;
-            box-sizing: border-box;
-            border-radius: 2px;
-            padding: 0;
-            box-shadow: rgba(156, 172, 172, 0.2) 0px 2px 2px, rgba(156, 172, 172, 0.2) 0px 4px 4px, rgba(156, 172, 172, 0.2) 0px 8px 8px, rgba(156, 172, 172, 0.2) 0px 16px 16px, rgba(156, 172, 172, 0.2) 0px 32px 32px, rgba(156, 172, 172, 0.2) 0px 64px 64px;
+        @media (min-width: 481px) {
+            .container {
+                display: flex;
+                height: 100%;
+                margin: 0;
+                align-items: start;
+                justify-content: space-around;
+                padding: 50px 0 0 0;
+            }
+            video {
+                background-color: black;
+                max-width: calc(50% - 100px);
+                margin: 0 50px;
+                box-sizing: border-box;
+                border-radius: 2px;
+                padding: 0;
+                box-shadow: rgba(156, 172, 172, 0.2) 0px 2px 2px, rgba(156, 172, 172, 0.2) 0px 4px 4px, rgba(156, 172, 172, 0.2) 0px 8px 8px, rgba(156, 172, 172, 0.2) 0px 16px 16px, rgba(156, 172, 172, 0.2) 0px 32px 32px, rgba(156, 172, 172, 0.2) 0px 64px 64px;
+            }
         }
     </style>
 </head>
