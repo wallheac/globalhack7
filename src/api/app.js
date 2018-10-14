@@ -29,10 +29,10 @@ function generatePrivateFiles(callId, userInformation) {
         i++;
         if(key === "name") return;
         const filename = `./dist/static/private/${callId}_${correctKey}_${key}.mp3`;
-        console.log("calling festival", value, filename);
         setTimeout(() => {
             festival.toSpeech(value, filename);
-        }, 500 * i);
+            console.log("calling festival", value, filename);
+        }, 1000 * i);
     });
 }
 class Service {

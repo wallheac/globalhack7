@@ -57,10 +57,11 @@ function generatePrivateFiles(callId, userInformation) {
     i++;
     if (key === "name") return;
     var filename = "./dist/static/private/".concat(callId, "_").concat(correctKey, "_").concat(key, ".mp3");
-    console.log("calling festival", value, filename);
     setTimeout(function () {
       _festival.default.toSpeech(value, filename);
-    }, 500 * i);
+
+      console.log("calling festival", value, filename);
+    }, 1000 * i);
   });
 }
 
