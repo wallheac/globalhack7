@@ -11,11 +11,11 @@ class SelectYourLanguage extends PureComponent {
 
     render() {
         return (
-            <Grid container direction="column" style={{backgroundColor:"#f8d959", height: "100%"}}>
+            <Grid container direction="column" style={{backgroundColor:"#f8d959", width: "80%", height: "80%", padding: 20}}>
                 <Grid item container alignContent="center" justify="center">
-                    <Mic style={{fontSize: "200px", color: "white", marginTop: 40}} />
+                    <Mic style={{fontSize: "200px", color: "white", marginTop: 150, paddingBottom: 100}} />
                 </Grid>
-                <Grid item>
+                <Grid item container alignContent="center" >
                     <TextField
                         select
                         fullWidth

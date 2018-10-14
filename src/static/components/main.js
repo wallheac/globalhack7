@@ -1,14 +1,9 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import SelectYourLanguage from "./selectYourLanguage";
 import UserChooser from "./userChooser";
 import SpokenLanguages from "./translator/spokenLanguages";
 import UserTypes from "./enums/userTypes";
-import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
-import Toolbar from "@material-ui/core/Toolbar";
-import Paper from "@material-ui/core/Paper";
 import UserInformation from "./user/userInformation"
 import CallInformation from "./user/callInformation"
 import Online from "./translator/online";
