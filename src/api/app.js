@@ -4,13 +4,14 @@ import https from "https";
 import path from "path";
 import url from "url";
 import WebSocket from "ws";
+import crypto from "crypto";
 
 const sessions = new Map();
 const calls = [];
 const onlineTranslators = new Set();
 //const admins = new Set();
 const callSubscribers = [];
-
+const secret = "fJei3KSclfp1X";
 class Service {
     // @TODO these two methods need to be protected, so they can't be called from the client
     cleanUpSession(ws, session) {
@@ -91,17 +92,15 @@ class Service {
         console.log("searching for translator for call request", content);
 
         const availableTranslators = Array.from(onlineTranslators.values()).filter(ts => {
-            console.log("check translator", ts);
             // @TODO don't match translators that are already on calls
             const matches = ts.translatorInformation.selectedLanguages.includes(content.voiceLanguage);
-            console.log("matches?", matches);
             return matches;
         });
 
         console.log("available translators that match: ", availableTranslators);
         if(availableTranslators.length > 0) {
             const translator = availableTranslators[0]; // @TODO add algorithm to select translator
-            console.log("matched to translator", translator);
+            console.log("matched to translator", translator.translatorInformation);
             content.status = "AWAITING_RESPONSE";
             translator.callInformation = {userSession: session, callRequest: content};
             // @TODO clean up this object before sending it to the translator
@@ -142,8 +141,14 @@ class Service {
             this.send(subWs, "playSound", "urlhere");
         });
     }
-    subscribeCall(ws, session, content) {
-        if(!callSubscribers[content]) callSubscribers[content] = [];
+    subscribeCall(ws, session, {callId, submittedKey}) {
+        const hmac = crypto.createHmac("sha256", secret);
+        hmac.update(callId);
+        const correctKey = hmac.digest("hex");
+
+        if(submittedKey !== correctKey) return console.error("attempt to subscribe without proper authorization");
+
+        if(!callSubscribers[callId]) callSubscribers[callId] = [];
         callSubscribers[content].push(ws);
     }
 };
@@ -183,7 +188,7 @@ wss.on("connection", (ws, req) => {
     });
     ws.on("close", () => {
         const sess = sessions.get(ws);
-        console.log("closed session", sess);
+        console.log("closed session");
         service.cleanUpSession(ws, sess);
     });
 });

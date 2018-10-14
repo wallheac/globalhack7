@@ -58,8 +58,8 @@ class Model extends EventEmitter {
     adminSubscribe() {
         return this.send("api.adminSubscribe");
     }
-    subscribeCall(callId) {
-        return this.send("api.subscribeCall", callId);
+    subscribeCall({callId, key}) {
+        return this.send("api.subscribeCall", {callId, key});
     }
     sendPrivate(fieldName) {
         return this.send("api.sendPrivate", fieldName);
