@@ -1,13 +1,15 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import Header from "./header";
+import Model from "../model/app";
 
 class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
             localStream: false,
-            remoteStream: false
+            remoteStream: false,
+            soundSrc: null
         };
         this.drone = new ScaleDrone("pc4Iz2ZtevnIoWfg");
         this.roomName = "observable-" + this.props.callId;
@@ -21,6 +23,9 @@ class Main extends Component {
     }
 
     componentDidMount() {
+        Model.on("playSound", soundSrc => {
+            this.setState({soundSrc});
+        });
         this.drone.on("open", error => {
             if(error) {
                 return console.error(error);
@@ -115,11 +120,12 @@ class Main extends Component {
     }
 
     render() {
-        const {localStream, remoteStream} = this.state;
+        const {localStream, remoteStream, soundSrc} = this.state;
         const {callId} = this.props;
         return (
             <div>
                 <Header callId={callId} />
+                {soundSrc ? <audio autoPlay src={soundSrc} /> : null}
                 <div className="container">
                     <video ref="local" autoPlay muted controls={localStream} />
                     <video ref="remote" autoPlay />
