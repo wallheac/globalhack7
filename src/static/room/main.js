@@ -1,14 +1,17 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
+import Header from "./header";
 
 class Main extends Component {
     constructor(props) {
         super(props);
+        const roomId = location.hash.substring(1);
         this.state = {
+            roomId,
             localStream: false,
             remoteStream: false
         };
-        const roomId = location.hash.substring(1);
+        
         this.drone = new ScaleDrone("pc4Iz2ZtevnIoWfg");
         this.roomName = "observable-" + roomId;
         this.configuration = {
@@ -115,18 +118,19 @@ class Main extends Component {
     }
 
     render() {
-        const {localStream, remoteStream} = this.state;
+        const {roomId, localStream, remoteStream} = this.state;
         return (
             <div>
+                <Header roomId={roomId} />
+                <div className="container">
+                    <video ref="local" autoPlay muted controls={localStream} />
+                    <video ref="remote" autoPlay />
+                </div>
                 {!remoteStream &&
                     <div className="wait">
                         Invite someone to join this room: <a href={location.href}>{location.href}</a>
                     </div>
                 }
-                <div className="container">
-                    <video ref="local" autoPlay muted controls={localStream} />
-                    <video ref="remote" autoPlay />
-                </div>
             </div>
         );
     }

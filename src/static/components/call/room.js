@@ -16,7 +16,7 @@ class Room extends Component {
     }
 
     join = () => {
-        window.open(`/static/room/#${this.state.number.toString(16)}`);
+        window.open(`/static/room/#${this.state.number.toString()}`);
     }
 
     handleChange = event => {

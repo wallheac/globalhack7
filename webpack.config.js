@@ -35,6 +35,15 @@ module.exports = function(env) {
                             babelrc: false
                         }
                     }
+                },
+                {
+                    test: /(\.png|\.jpg|\.gif|\.eot|\.woff|\.svg|\.woff2|\.ttf|\.swf)(\?.*)?$/,
+                    use: {
+                        loader: "file-loader",
+                        options: {
+                            name: "[path][name].[ext]"
+                        }
+                    }
                 }
             ]
         },

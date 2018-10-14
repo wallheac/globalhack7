@@ -20,6 +20,10 @@ var _url = _interopRequireDefault(require("url"));
 
 var _ws = _interopRequireDefault(require("ws"));
 
+var sessions = new Map();
+var calls = [];
+var onlineTranslators = new Set();
+
 var Service =
 /*#__PURE__*/
 function () {
@@ -28,6 +32,13 @@ function () {
   }
 
   (0, _createClass2.default)(Service, [{
+    key: "cleanUpSession",
+    // @TODO these two methods need to be protected, so they can't be called from the client
+    value: function cleanUpSession(ws, session) {
+      if (sessions.has(session)) sessions.delete(session);
+      if (onlineTranslators.has(session)) onlineTranslators.delete(session);
+    }
+  }, {
     key: "send",
     value: function send(ws, topic, content) {
       ws.send(JSON.stringify({
@@ -50,21 +61,110 @@ function () {
       }));
     }
   }, {
-    key: "setNativeLanguage",
-    value: function setNativeLanguage(ws, session, content) {
-      session.nativeLanguage = session;
-      this.send(ws, "state.nativeLanguage", session.nativeLanguage);
+    key: "setLanguage",
+    value: function setLanguage(ws, session, content) {
+      session.language = content;
+      this.send(ws, "state.language", session.language);
     }
   }, {
-    key: "setRole",
-    value: function setRole(ws, session, content) {
+    key: "setUserType",
+    value: function setUserType(ws, session, content) {
       if (content !== "USER" && content !== "TRANSLATOR") {
-        console.error("invalid role", content);
+        console.error("invalid userType", content);
         return;
       }
 
-      session.role = content;
-      this.send(ws, "state.role", session.role);
+      session.userType = content;
+      this.send(ws, "state.userType", session.userType);
+    }
+  }, {
+    key: "setOnlineStatus",
+    value: function setOnlineStatus(ws, session, _ref) {
+      var onlineStatus = _ref.onlineStatus,
+          translatorInformation = _ref.translatorInformation;
+
+      if (session.userType !== "TRANSLATOR") {
+        console.error("attempt to set online status for non-translator");
+        return;
+      }
+
+      if (typeof onlineStatus !== "boolean") {
+        console.error("attempt to set online status to non-boolean value");
+        return;
+      }
+
+      if (!translatorInformation.selectedLanguages.includes(session.language)) translatorInformation.selectedLanguages.push(session.language); // add translators when they go online
+
+      if (onlineStatus && !onlineTranslators.has(session)) {
+        onlineTranslators.add(session);
+      } // delete translators that go offline
+
+
+      if (!onlineStatus && onlineTranslators.has(session)) {
+        onlineTranslators.delete(session);
+      }
+
+      session.translatorInformation = translatorInformation;
+      session.onlineStatus = onlineStatus;
+      this.send(ws, "state.onlineStatus", session.onlineStatus);
+    }
+  }, {
+    key: "setUserInformation",
+    value: function setUserInformation(ws, session, content) {
+      if (session.userType !== "USER") {
+        console.error("attempt to set user information for non-user");
+        return;
+      } // @TODO validate this
+
+
+      session.userInformation = content;
+      this.send(ws, "state.userInformation", session.userInformation);
+    }
+  }, {
+    key: "requestCall",
+    value: function requestCall(ws, session, content) {
+      console.log("received call request", content);
+      if (session.userType !== "USER") return console.error("attempt to request call as a non-user");
+      if (!Array.isArray(session.callRequests)) session.callRequests = [];
+      session.callRequests.push(content);
+      calls.push({
+        callRequest: content,
+        userSession: session
+      });
+      console.log("searching for translator for call request", content);
+      var availableTranslators = Array.from(onlineTranslators.values()).filter(function (ts) {
+        console.log("check translator", ts); // @TODO don't match translators that are already on calls
+
+        var matches = ts.translatorInformation.selectedLanguages.includes(content.voiceLanguage);
+        console.log("matches?", matches);
+        return matches;
+      });
+      console.log("available translators that match: ", availableTranslators);
+
+      if (availableTranslators.length > 0) {
+        var translator = availableTranslators[0]; // @TODO add algorithm to select translator
+
+        console.log("matched to translator", translator);
+        content.status = "AWAITING_RESPONSE";
+        translator.callInformation = {
+          userSession: session,
+          callRequest: content
+        }; // @TODO clean up this object before sending it to the translator
+
+        this.send(translator.ws, "state.callInformation", translator.callInformation.callRequest);
+      }
+
+      this.send(ws, "state.callRequests", session.callRequests);
+    }
+  }, {
+    key: "acceptCall",
+    value: function acceptCall(ws, session, content) {
+      if (session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
+      if (!session.callInformation) return console.error("no call assigned to be accepted");
+      if (session.callInformation.callRequest.status !== "AWAITING_RESPONSE") return console.error("call not in status to be accepted");
+      session.callInformation.callRequest.status = "CONNECTED";
+      this.send(session, "state.callInformation", session.callInformation.callRequest);
+      this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
     }
   }]);
   return Service;
@@ -89,7 +189,6 @@ var server = _https.default.createServer({
 var wss = new _ws.default.Server({
   noServer: true
 });
-var sessions = new Map();
 wss.on("connection", function (ws, req) {
   sessions.set(ws, {});
   ws.on("message", function (message) {
@@ -112,6 +211,7 @@ wss.on("connection", function (ws, req) {
         }
 
         var sess = sessions.get(ws);
+        sess.ws = ws;
         service[method](ws, sess, body.content);
       } else {
         console.log("unknown message type", message);
@@ -120,6 +220,11 @@ wss.on("connection", function (ws, req) {
     } catch (error) {
       console.log("error!!!", error);
     }
+  });
+  ws.on("close", function () {
+    var sess = sessions.get(ws);
+    console.log("closed session", sess);
+    service.cleanUpSession(sess);
   });
 });
 server.on("upgrade", function (req, socket, head) {
