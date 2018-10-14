@@ -141,7 +141,7 @@ class Service {
 
         session.callInformation.callRequest.status = "CONNECTED";
         this.send(ws, "state.callInformation", session.callInformation.callRequest);
-        this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
+        this.send(session.callInformation.userSession.ws, "state.callRequests", session.callInformation.userSession.callRequests);
         //this.sendAdminCalls();
     }
     completeCall(ws, session, content) {
@@ -153,7 +153,7 @@ class Service {
         session.callInformation.callRequest.result = content;
 
         this.send(ws, "state.callInformation", session.callInformation.callRequest);
-        this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
+        this.send(session.callInformation.userSession.ws, "state.callRequests", session.callInformation.userSession.callRequests);
         //this.sendAdminCalls();
 
     }
