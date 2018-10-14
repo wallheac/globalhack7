@@ -46,7 +46,8 @@ class Model extends EventEmitter {
         return this.send("api.setUserInformation", userInformation);
     }
     requestCall(call) {
-        const callId = Math.floor(Math.random() * 1000000) + "-" + Math.floor(Math.random() * 1000000) + "-" + Math.floor(Math.random() * 1000000);
+        const callId = `${Math.floor(Math.random()*100000)}-${Math.floor(Math.random()*100000)}-${Math.floor(Math.random()*100000)}`;
+        //const callId = "" + Math.floor(Math.random() * 1000000) + "-" + Math.floor(Math.random() * 1000000) + "-" + Math.floor(Math.random() * 1000000);
         return this.send("api.requestCall", {callId, ...call});
     }
     acceptCall() {

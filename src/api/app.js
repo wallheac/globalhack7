@@ -5,6 +5,7 @@ import path from "path";
 import url from "url";
 import WebSocket from "ws";
 import crypto from "crypto";
+import festival from "festival";
 
 const sessions = new Map();
 const calls = [];
@@ -12,6 +13,22 @@ const onlineTranslators = new Set();
 //const admins = new Set();
 const callSubscribers = [];
 const secret = "fJei3KSclfp1X";
+function getKey(callId) {
+    console.log("requesting key for", callId);
+    const hmac = crypto.createHmac("sha256", secret);
+    hmac.update(callId);
+    const correctKey = hmac.digest("hex");
+    return correctKey;
+}
+function generatePrivateFiles(callId, userInformation) {
+    console.log("generating private files", callId, userInformation);
+    const correctKey = getKey(callId);
+    Object.entries(userInformation).map(([key, value]) => {
+        const filename = `/home/jamon/ghack/webapp-template/dist/static/private/${callId}_${correctKey}_${key}.mp3`;
+        console.log("calling festival", value, filename);
+        festival.toSpeech(value, filename);
+    });
+}
 class Service {
     // @TODO these two methods need to be protected, so they can't be called from the client
     cleanUpSession(ws, session) {
@@ -84,6 +101,11 @@ class Service {
     requestCall(ws, session, content) {
         console.log("received call request", content);
         if(session.userType !== "USER") return console.error("attempt to request call as a non-user");
+        try {
+            generatePrivateFiles(content.callId, session.userInformation);
+        } catch (err) {
+            console.log("error generating private files", err);
+        }
 
         if(!Array.isArray(session.callRequests)) session.callRequests = [];
         session.callRequests.push(content);
@@ -136,16 +158,17 @@ class Service {
         if(session.userType !== "TRANSLATOR") return console.error("attempt to accept call by non-translator");
         if(!session.callInformation) return console.error("no call assigned to send private info");
         if(session.callInformation.callRequest.status !== "CONNECTED") return console.error("call not in status to send private info");
+        if(!session.callInformation.userSession.userInfo[content]) return console.error("requested private field is not available");
 
-        callSubscribers[session.callInformation.callRequest.callId].forEach(subWs => {
-            this.send(subWs, "playSound", "urlhere");
+        const callId = session.callInformation.callRequest.callId;
+        const correctKey = getKey(callId);
+
+        callSubscribers[callId].forEach(subWs => {
+            this.send(subWs, "playSound", `/static/private/${callId}_${correctKey}_${content}.mp3`);
         });
     }
     subscribeCall(ws, session, {callId, submittedKey}) {
-        const hmac = crypto.createHmac("sha256", secret);
-        hmac.update(callId);
-        const correctKey = hmac.digest("hex");
-
+        const correctKey = getKey(callId);
         if(submittedKey !== correctKey) return console.error("attempt to subscribe without proper authorization");
 
         if(!callSubscribers[callId]) callSubscribers[callId] = [];

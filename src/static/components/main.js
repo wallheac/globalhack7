@@ -104,7 +104,7 @@ class Main extends Component {
         });
         Model.once("state.userInformation", () => {
             this.sendCallInformation({
-                callId: Math.floor(Math.random()*100000),
+                callId: `${Math.floor(Math.random()*100000)}-${Math.floor(Math.random()*100000)}-${Math.floor(Math.random()*100000)}`,
                 callerName: 'Someone',
                 phoneNumber: '1231231233',
                 message: 'aslkdjflaskdf',
