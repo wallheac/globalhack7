@@ -4,20 +4,29 @@ import Typography from "@material-ui/core/Typography";
 import ToggleOnlineButton from "./toggleOnlineButton";
 import Grid from "@material-ui/core/Grid";
 import CallNotification from "./callNotification";
+import Model from "../../model/app";
 
 class Online extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            incomingCall: false
+            callInformation: null
         }
     }
 
     componentDidMount() {
-        setTimeout(() => this.setState({incomingCall: true}), 4000);
+        Model.on("state.callInformation", callInformation => {
+            this.setState({callInformation});
+        });
     }
 
-    onAcceptCall = () => console.log("Okay. Thanks for accepting the call");
+    shouldShowModal() {
+        return Boolean(this.state.callInformation && this.state.callInformation.status === "AWAITING_RESPONSE");
+    }
+
+    onAcceptCall = () => {
+        Model.acceptCall();
+    }
 
     onDeclineCall = () => this.setState({incomingCall: false});
 
@@ -27,7 +36,7 @@ class Online extends PureComponent {
                 <Typography>You Are Available!</Typography>
                 <ToggleOnlineButton online={this.props.online} toggleOnline={this.props.toggleOnline} />
                 <CallNotification
-                    show={this.state.incomingCall}
+                    show={this.shouldShowModal()}
                     onAcceptCall={this.onAcceptCall}
                     onDeclineCall={this.onDeclineCall}
                 />

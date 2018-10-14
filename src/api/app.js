@@ -106,7 +106,7 @@ class Service {
         if(session.callInformation.callRequest.status !== "AWAITING_RESPONSE") return console.error("call not in status to be accepted");
 
         session.callInformation.callRequest.status = "CONNECTED";
-        this.send(session, "state.callInformation", session.callInformation.callRequest);
+        this.send(ws, "state.callInformation", session.callInformation.callRequest);
         this.send(session.callInformation.userSession, "state.callRequests", session.callInformation.userSession.callRequests);
     }
 };

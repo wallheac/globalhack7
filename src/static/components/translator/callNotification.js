@@ -4,25 +4,10 @@ import {Dialog, DialogTitle, IconButton, Typography, Grid} from "@material-ui/co
 import {CheckCircle, Cancel} from '@material-ui/icons';
 
 class CallNotification extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            acceptCall: null
-        }
-    }
-
-    handleAccept() {
-        //TODO
-    }
-
-    handleDecline() {
-        //TODO
-    }
-
     render() {
         return(
-            <Dialog open={true}>
-            <DialogTitle>Accept Call</DialogTitle>
+            <Dialog open={this.props.show}>
+                <DialogTitle>Accept Call</DialogTitle>
                 <Grid container direction="column" alignItems="center">
                     <Grid item>
                         <Typography>
@@ -41,17 +26,17 @@ class CallNotification extends Component {
                         </IconButton>
                     </Grid>
                 </Grid>
-                </Dialog>
+            </Dialog>
         );
     };
 }
 
 CallNotification.propTypes = {
-    openCallNotification: PropTypes.bool,
+    show: PropTypes.bool,
 };
 
 CallNotification.defaultProps = {
-    openCallNotification: false
+    show: false
 };
 
 export default CallNotification;
