@@ -28,7 +28,7 @@ class Online extends PureComponent {
     }
 
     onAcceptCall = () => {
-        window.open(`/static/room/#${this.state.callInformation.callId}`);
+        window.open(`/static/room/?callId=${this.state.callInformation.callId}`);
         Model.acceptCall();
     }
 

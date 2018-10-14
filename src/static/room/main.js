@@ -5,15 +5,12 @@ import Header from "./header";
 class Main extends Component {
     constructor(props) {
         super(props);
-        const roomId = location.hash.substring(1);
         this.state = {
-            roomId,
             localStream: false,
             remoteStream: false
         };
-        
         this.drone = new ScaleDrone("pc4Iz2ZtevnIoWfg");
-        this.roomName = "observable-" + roomId;
+        this.roomName = "observable-" + this.props.callId;
         this.configuration = {
             iceServers: [{
                 urls: "stun:stun.l.google.com:19302"
@@ -118,17 +115,18 @@ class Main extends Component {
     }
 
     render() {
-        const {roomId, localStream, remoteStream} = this.state;
+        const {localStream, remoteStream} = this.state;
+        const {callId} = this.props;
         return (
             <div>
-                <Header roomId={roomId} />
+                <Header callId={callId} />
                 <div className="container">
                     <video ref="local" autoPlay muted controls={localStream} />
                     <video ref="remote" autoPlay />
                 </div>
                 {!remoteStream &&
                     <div className="wait">
-                        Invite someone to join this room: <a href={location.href}>{location.href}</a>
+                        Waiting for someone to join this room.
                     </div>
                 }
             </div>
