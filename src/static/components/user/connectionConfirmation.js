@@ -35,23 +35,18 @@ class ConnectionConfirmation extends Component {
                                 />
                             </div> :
                                 this.props.status && this.props.status.status === "COMPLETE" ?
-                                    <Grid item container spacing={32}>
-                                        <div>
-                                            <Typography>Your voice has been heard</Typography>
-                                            <Button style={{margin: 6}} onClick={this.showNotes} size="large" variant="contained">Notes</Button>
-                                            <Button style={{margin: 6}} size="large" variant="contained">Start Over</Button>
-                                            <Button style={{margin: 6}} size="large" variant="contained">Exit</Button>
-                                            {
-                                                this.state.showNotes && <Typography>{this.props.status.result}</Typography>
-                                            }
-                                        </div>
-                                    </Grid> :
-                                        <Grid container alignItems="center" justify="center">
-                                            <CircularProgress/>
+                                    <div style={{textAlign: "center", margin: 20}}>
+                                        <Typography variant="title">Your voice has been heard</Typography>
+                                        <Button fullWidth style={{margin: 6}} onClick={this.showNotes} size="large" variant="contained">Notes</Button>
+                                        {
+                                            this.state.showNotes && <Typography>{this.props.status.result}</Typography>
+                                        }
+                                    </div> :
+                                        <Grid item container alignItems="center" justify="center">
+                                            <CircularProgress />
                                         </Grid>
                     }
                 </Grid>
-                {/*@Todo connect translatorName props*/}
             </Dialog>
         );
     }

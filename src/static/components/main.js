@@ -8,7 +8,6 @@ import UserInformation from "./user/userInformation"
 import CallInformation from "./user/callInformation"
 import Online from "./translator/online";
 import ConnectionConfirmation from "./user/connectionConfirmation";
-
 import Model from "../model/app";
 
 class Main extends Component {
@@ -125,19 +124,19 @@ class Main extends Component {
         console.log("### this.state.requestId: ", this.state.requestId);
         return (
             <Grid container alignContent="center" alignItems="center" justify="center" style={{height:"100%"}}>
+                {
                     {
-                        {
-                            "language": () => <SelectYourLanguage language={this.state.language} onSelectYourLanguage={this.onSelectYourLanguage} />,
-                            "userType": () => <UserChooser onChooseUser={this.onChooseUser} lastStep={this.lastStep} />,
-                            "translator_spokenLanguages": () => <SpokenLanguages handleToggleOnline={this.handleToggleOnline} lastStep={this.lastStep} online={this.state.onlineStatus} />,
-                            "translator_onlineStatus": () => <Online online={this.state.onlineStatus} userInformation={this.state.userInformation} toggleOnline={this.handleToggleOnline} />,
-                            "translator_next": () => <div>done???(translator)</div>,
-                            "user_information": () => <UserInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendUserInformation={this.sendUserInformation} />,
-                            "user_callInformation": () => <CallInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendCallInformation={this.sendCallInformation} />,
-                            "user_next": () => <div>done??? (user)</div>,
-                            "user_connected": () => <ConnectionConfirmation status={this.state.callRequests.find(req => req.callId === this.state.requestId)} />
-                        }[this.state.step]()
-                    }
+                        "language": () => <SelectYourLanguage language={this.state.language} onSelectYourLanguage={this.onSelectYourLanguage} />,
+                        "userType": () => <UserChooser onChooseUser={this.onChooseUser} lastStep={this.lastStep} />,
+                        "translator_spokenLanguages": () => <SpokenLanguages handleToggleOnline={this.handleToggleOnline} lastStep={this.lastStep} online={this.state.onlineStatus} />,
+                        "translator_onlineStatus": () => <Online online={this.state.onlineStatus} userInformation={this.state.userInformation} toggleOnline={this.handleToggleOnline} />,
+                        "translator_next": () => <div>done???(translator)</div>,
+                        "user_information": () => <UserInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendUserInformation={this.sendUserInformation} />,
+                        "user_callInformation": () => <CallInformation chosenLanguage={this.state.language} lastStep={this.lastStep} sendCallInformation={this.sendCallInformation} />,
+                        "user_next": () => <div>done??? (user)</div>,
+                        "user_connected": () => <ConnectionConfirmation status={this.state.callRequests.find(req => req.callId === this.state.requestId)} />
+                    }[this.state.step]()
+                }
             </Grid>
         );
     }

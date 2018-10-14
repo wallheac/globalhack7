@@ -19,13 +19,6 @@ const styles = theme => ({
 });
 
 class SoundBoard extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        }
-    }
-
     sendItem = field => () => Model.sendPrivate(field);
 
     render() {
@@ -39,9 +32,13 @@ class SoundBoard extends Component {
             <Fragment>
                 <Grid item container spacing={24}>
                     {
-                        this.props.userInformation && this.props.userInformation.map(info => <Grid key={info} item>
-                                <Button variant="contained" color="secondary" onClick={this.sendItem(info)}>{fields[info]}</Button>
-                            </Grid>)
+                        this.props.userInformation && this.props.userInformation.map(info => {
+                            if(info !== "name") {
+                                return <Grid key={info} item>
+                                    <Button variant="contained" color="secondary" onClick={this.sendItem(info)}>{fields[info]}</Button>
+                                </Grid>
+                            }
+                        })
                     }
                 </Grid>
             </Fragment>
