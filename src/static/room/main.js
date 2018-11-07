@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, createRef} from "react";
 import ReactDOM from "react-dom";
 import Header from "./header";
 import Model from "../model/app";
@@ -20,6 +20,9 @@ class Main extends Component {
         };
         this.room = null;
         this.pc = null;
+        this.localVideo = createRef();
+        this.remoteVideo = createRef();
+        this.isNegotiating = false;
     }
 
     componentDidMount() {
@@ -33,7 +36,7 @@ class Main extends Component {
             this.room = this.drone.subscribe(this.roomName);
             this.room.on("open", error => {
                 if(error) {
-                    console.error(error);                           
+                    console.error(error);
                 }
             });
             // We"re connected to the room and received an array of "members"
@@ -65,14 +68,22 @@ class Main extends Component {
         // If user is offerer let the "negotiationneeded" event create the offer
         if(isOfferer) {
             this.pc.onnegotiationneeded = () => {
+                if(this.isNegotiating) {
+                    console.log("SKIP nested negotiations");
+                    return;
+                }
+                this.isNegotiating = true;
                 this.pc.createOffer().then(this.localDescCreated.bind(this)).catch(error => console.error(error));
+            }
+            this.pc.onsignalingstatechange = () => {  // Workaround for Chrome: skip nested negotiations
+                isNegotiating = this.pc.signalingState !== "stable";
             }
         }
     
         // When a remote stream arrives display it in the remote video element
         this.pc.ontrack = event => {
             const stream = event.streams[0];
-            const remote = ReactDOM.findDOMNode(this.refs.remote);
+            const remote = this.remoteVideo.current;
             if(!remote.srcObject || remote.srcObject.id !== stream.id) {
                 console.log("Set Remote Stream");
                 this.setState({remoteStream: true});
@@ -85,7 +96,7 @@ class Main extends Component {
                 console.log("Set Local Stream");
                 this.setState({localStream: true});
                 // Display your local video in local video element
-                const local = ReactDOM.findDOMNode(this.refs.local);
+                const local = this.localVideo.current;
                 local.srcObject = stream;
                 // Add your stream to be sent to the conneting peer
                 stream.getTracks().forEach(track => this.pc.addTrack(track, stream));
@@ -127,8 +138,8 @@ class Main extends Component {
                 <Header callId={callId} />
                 {soundSrc ? <audio autoPlay src={soundSrc} /> : null}
                 <div className="container">
-                    <video ref="local" autoPlay muted controls={localStream} />
-                    <video ref="remote" autoPlay />
+                    <video ref={this.localVideo} autoPlay muted controls={localStream} />
+                    <video ref={this.remoteVideo} autoPlay />
                 </div>
                 {!remoteStream &&
                     <div className="wait">

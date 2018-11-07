@@ -17,9 +17,9 @@ if(!location.search) {
     callId = query.callId;
     key = query.key;
     if(key) {
-        console.log("Subsribe Call");
+        console.log("Subsribe Call", {callId, key});
         Model.subscribeCall({callId, key});
     }
 }
 
-ReactDOM.render(React.createElement(Main, {key, callId}), document.getElementById("container"));
+ReactDOM.render(React.createElement(Main, {callId}), document.getElementById("container"));
