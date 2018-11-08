@@ -52,7 +52,7 @@ module.exports = function(env) {
             extensions: [".js", ".json"]
         },
         devServer: {
-            // host: "0.0.0.0", // Enable it if you want your server to be accessible externally
+            host: "0.0.0.0", // Enable it if you want your server to be accessible externally
             https: true,
             contentBase: path.join(__dirname, "dist", "static"),
             index: "index.html",
@@ -65,7 +65,7 @@ module.exports = function(env) {
                     secure: false
                 },
                 "/test": {
-                    target: "wss://localhost:9081",
+                    target: "wss://localhost:8443",
                     ws: true,
                     secure: false
                 }

@@ -76,7 +76,7 @@ class Main extends Component {
                 this.pc.createOffer().then(this.localDescCreated.bind(this)).catch(error => console.error(error));
             }
             this.pc.onsignalingstatechange = () => {  // Workaround for Chrome: skip nested negotiations
-                isNegotiating = this.pc.signalingState !== "stable";
+                this.isNegotiating = (this.pc.signalingState !== "stable");
             }
         }
     
